@@ -1,0 +1,2 @@
+export { ControlePerdasPage } from './ControlePerdas';
+
