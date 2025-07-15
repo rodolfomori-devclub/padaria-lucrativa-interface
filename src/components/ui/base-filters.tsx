@@ -1,17 +1,22 @@
 import { useCallback } from "react"
 import { cn } from "~/lib/utils"
 import type { BaseDateFilters, FilterUpdateFunction } from "~/types/filters"
+import { formatCurrency } from "~/utils/formaters"
 import { MonthYearPicker } from "./date-picker"
 
 interface BaseFiltersProps<T extends BaseDateFilters> {
     filters: T
     className?: string
+    total?: number | null
+    totalPurchase?: number | null
     onFiltersChange: FilterUpdateFunction<T>
 }
 
 export function BaseFilters<T extends BaseDateFilters>({
     filters,
     className,
+    total,
+    totalPurchase,
     onFiltersChange
 }: BaseFiltersProps<T>) {
     // Removed filter type state since we only use month filter now
@@ -63,7 +68,7 @@ export function BaseFilters<T extends BaseDateFilters>({
     // }, [onFiltersChange])
 
     return (
-        <div className={cn("bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6 flex gap-4", className)}>
+        <div className={cn("bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center", className)}>
             <div className="flex items-center gap-4">
                 <h3 className="text-lg font-medium text-gray-900">Filtros</h3>
                 {/* Commented out filter type toggle buttons for future use */}
@@ -83,18 +88,35 @@ export function BaseFilters<T extends BaseDateFilters>({
                         Por Período
                     </Button>
                 </div> */}
+                {/* Only month filter is now active */}
+                <div className="flex items-center gap-4">
+                    <MonthYearPicker
+                        value={{
+                            month: filters.month || new Date().getMonth() + 1,
+                            year: filters.year || new Date().getFullYear()
+                        }}
+                        onChange={handleMonthYearChange}
+                    />
+                </div>
             </div>
 
-            {/* Only month filter is now active */}
-            <div className="flex items-center gap-4">
-                <MonthYearPicker
-                    value={{
-                        month: filters.month || new Date().getMonth() + 1,
-                        year: filters.year || new Date().getFullYear()
-                    }}
-                    onChange={handleMonthYearChange}
-                />
-            </div>
+            {total && !totalPurchase && (
+                <h3 className="text-lg font-medium text-gray-800">
+                    Total: {formatCurrency(total)}
+                </h3>
+            )}
+
+            {total && totalPurchase && (
+                <div className="flex items-center gap-4">
+                    <h3 className="text-lg font-medium text-gray-800">
+                        Total de Vendas: {formatCurrency(total)}
+                    </h3>
+                    <h3 className="text-lg font-medium text-gray-800">
+                        Total de Compras: {formatCurrency(totalPurchase)}
+                    </h3>
+
+                </div>
+            )}
 
             {/* Commented out date range functionality for future use */}
             {/* {filterType === 'range' && (

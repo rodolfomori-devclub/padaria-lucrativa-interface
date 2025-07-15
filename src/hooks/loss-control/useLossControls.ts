@@ -20,9 +20,12 @@ export const useLossControls = (filters?: LossControlFilters) => {
         },
     })
 
+    const total = lossControls.reduce((acc, lossControl) => acc + lossControl.totalValue, 0) || null
+
     return {
         lossControls,
         isLoading,
         error,
+        total,
     }
 } 

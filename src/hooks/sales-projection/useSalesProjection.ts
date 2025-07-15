@@ -84,6 +84,9 @@ export const useSalesProjection = (filters: SalesProjectionFilters) => {
     }
   };
 
+  const total = dayProjections.reduce((acc, projection) => acc + projection.salesValue, 0) || null
+  const totalPurchase = dayProjections.reduce((acc, projection) => acc + projection.purchaseValue, 0) || null
+
   return {
     // Data
     dayProjections,
@@ -97,5 +100,9 @@ export const useSalesProjection = (filters: SalesProjectionFilters) => {
 
     // Actions
     batchUpdateProjections,
+
+    // Totals
+    total,
+    totalPurchase,
   };
 };

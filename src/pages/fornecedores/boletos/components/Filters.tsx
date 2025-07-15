@@ -6,12 +6,14 @@ import {
     SelectTrigger,
     SelectValue
 } from "~/components/ui/select"
+import { useBoletos } from "~/hooks/boletos/useBoletos"
 import { useBoletoFilters } from "~/hooks/filters/boleto-filters"
 import { useSuppliers } from "~/hooks/suppliers/useSuppliers"
 
 export function Filters() {
     const { filters, updateFilters } = useBoletoFilters()
     const { allSuppliers } = useSuppliers()
+    const { total } = useBoletos(filters)
 
     return (
         <div className="mb-6 space-y-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
@@ -19,6 +21,7 @@ export function Filters() {
                 className="bg-transparent border-none shadow-none p-0"
                 filters={filters}
                 onFiltersChange={updateFilters}
+                total={total}
             />
 
             <div className="flex gap-4 items-end">

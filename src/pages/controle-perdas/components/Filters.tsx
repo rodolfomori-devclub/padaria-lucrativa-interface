@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { BaseFilters, Input, Label } from "~/components/ui"
 import { useLossControlFilters } from "~/hooks/filters/loss-control-filters"
+import { useLossControls } from "~/hooks/loss-control/useLossControls"
 import { useDebounce } from "~/hooks/useDebounce"
 
 export function Filters() {
     const { filters, updateFilters } = useLossControlFilters()
     const [productName, setProductName] = useState(filters.search || '')
     const debouncedProductName = useDebounce({ value: productName, delay: 500 })
+    const { total } = useLossControls(filters)
 
     useEffect(() => {
         updateFilters({ search: debouncedProductName || undefined })
@@ -18,6 +20,7 @@ export function Filters() {
                 className="bg-transparent border-none shadow-none p-0"
                 filters={filters}
                 onFiltersChange={updateFilters}
+                total={total}
             />
 
             <div className="flex gap-4 items-end">

@@ -20,9 +20,12 @@ export const useBoletos = (filters?: BoletoFilters) => {
         },
     })
 
+    const total = boletos.reduce((acc, boleto) => acc + boleto.value, 0) || null
+
     return {
         boletos,
         isLoading,
         error,
+        total,
     }
 } 

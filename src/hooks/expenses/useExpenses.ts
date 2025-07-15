@@ -20,9 +20,12 @@ export const useExpenses = (filters?: ExpenseFilters) => {
         },
     })
 
+    const total = expenses.reduce((acc, expense) => acc + expense.value, 0) || null
+
     return {
         expenses,
         isLoading,
         error,
+        total,
     }
 } 

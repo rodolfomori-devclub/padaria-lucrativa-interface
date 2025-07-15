@@ -21,9 +21,12 @@ export const useEmployeeExpenses = (filters?: EmployeeExpenseFilters) => {
         },
     })
 
+    const total = employeeExpenses.reduce((acc, expense) => acc + expense.netSalary, 0) || null
+
     return {
         employeeExpenses,
         isLoading,
         error,
+        total,
     }
 } 
