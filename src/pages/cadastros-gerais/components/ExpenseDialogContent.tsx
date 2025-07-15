@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/button'
 import { DialogFooter } from '~/components/ui/dialog'
 import { Input as UIInput } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { useExpenseFilters } from '~/hooks/filters'
 import { expenseSchema, type ExpenseFormData } from '~/schema/expenses'
 import type { CreateExpenseData, Expense } from '~/types/expense'
 
@@ -18,6 +19,7 @@ interface ExpenseDialogContentProps {
 
 export function ExpenseDialogContent({ expense, onSubmit, onCancel, isLoading, isFixed }: ExpenseDialogContentProps) {
     const isEditing = !!expense
+    const { filters } = useExpenseFilters()
 
     const {
         register,
@@ -48,7 +50,8 @@ export function ExpenseDialogContent({ expense, onSubmit, onCancel, isLoading, i
     }, [expense, reset])
 
     const handleFormSubmit = async (data: ExpenseFormData) => {
-        await onSubmit({ ...data, isFixed })
+        const day = new Date(filters.month ?? 0, filters.year ?? 0).toISOString()
+        await onSubmit({ ...data, isFixed, day })
     }
 
     const typeText = isFixed ? 'fixa' : 'variável'
