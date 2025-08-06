@@ -5,9 +5,12 @@ export interface EmployeeExpense {
     job?: Pick<Job, 'name'>
     day: Date
     baseSalary: number
-    extraHours: number
+    extraHours?: number
     grossSalary: number
-    benefits: number
+    fgts: number
+    inss: number
+    transport?: number
+    meal?: number
     netSalary: number
     isActive: boolean
     createdAt: Date
@@ -21,7 +24,10 @@ export interface CreateEmployeeExpenseData {
     baseSalary: number
     extraHours: number
     grossSalary: number
-    benefits: number
+    fgts?: number
+    inss?: number
+    transport?: number
+    meal?: number
     netSalary: number
 }
 
@@ -31,7 +37,8 @@ export interface UpdateEmployeeExpenseData {
     baseSalary?: number
     extraHours?: number
     grossSalary?: number
-    benefits?: number
+    transport?: number
+    meal?: number
     netSalary?: number
 }
 

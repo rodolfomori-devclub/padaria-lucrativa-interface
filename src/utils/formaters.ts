@@ -1,12 +1,14 @@
 import { format } from 'date-fns'
 
 export const formatCurrency = (value?: number | string) => {
-    if (!value) return 'R$ 0,00'
+    if (value === undefined || value === null) return ''
+    if (value === 0) return '0,00'
     return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
         maximumFractionDigits: 2,
-    }).format(Number(value))
+        minimumFractionDigits: 2,
+    }).format(Number(value) / 100)
 }
 
 export const formatNumber = (value?: number | string) => {
@@ -22,6 +24,7 @@ export const formatMonthYear = (date: Date) => {
 }
 
 export const removeNonNumeric = (value: string): string => {
+    if (!value) return ''
     return value.replace(/\D/g, '')
 }
 

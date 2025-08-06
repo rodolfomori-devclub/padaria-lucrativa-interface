@@ -50,24 +50,27 @@ export function EmployeeExpensesTable({ employeeExpenses, isLoading }: EmployeeE
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {employeeExpenses.map((expense) => (
-                        <TableRow key={expense.id}>
-                            <TableCell className="font-medium">{expense.name}</TableCell>
-                            <TableCell>{expense.job?.name || 'N/A'}</TableCell>
-                            <TableCell>{formatCurrency(expense.baseSalary)}</TableCell>
-                            <TableCell>{formatCurrency(expense.extraHours)}</TableCell>
-                            <TableCell>{formatCurrency(expense.grossSalary)}</TableCell>
-                            <TableCell>{formatCurrency(expense.benefits)}</TableCell>
-                            <TableCell className="font-semibold">{formatCurrency(expense.netSalary)}</TableCell>
-                            <TableCell>{formatMonthYear(expense.createdAt)}</TableCell>
-                            <TableCell className="text-right">
-                                <div className="flex justify-end gap-2">
-                                    <EditEmployeeExpenseDialog employeeExpense={expense} />
-                                    <DeleteEmployeeExpenseDialog employeeExpense={expense} />
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {employeeExpenses.map((expense) => {
+                        const benefits = (expense.transport || 0) + (expense.meal || 0) + expense.fgts
+                        return (
+                            <TableRow key={expense.id}>
+                                <TableCell className="font-medium">{expense.name}</TableCell>
+                                <TableCell>{expense.job?.name || 'N/A'}</TableCell>
+                                <TableCell>{formatCurrency(expense.baseSalary)}</TableCell>
+                                <TableCell>{formatCurrency(expense.extraHours)}</TableCell>
+                                <TableCell>{formatCurrency(expense.grossSalary)}</TableCell>
+                                <TableCell>{formatCurrency(benefits)}</TableCell>
+                                <TableCell className="font-semibold">{formatCurrency(expense.netSalary)}</TableCell>
+                                <TableCell>{formatMonthYear(expense.createdAt)}</TableCell>
+                                <TableCell className="text-right">
+                                    <div className="flex justify-end gap-2">
+                                        <EditEmployeeExpenseDialog employeeExpense={expense} />
+                                        <DeleteEmployeeExpenseDialog employeeExpense={expense} />
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </div>

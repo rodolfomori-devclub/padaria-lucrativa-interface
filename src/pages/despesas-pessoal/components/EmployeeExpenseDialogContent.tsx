@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~
 import { useJobs } from '~/hooks/jobs/useJobs'
 import { employeeExpenseSchema, type EmployeeExpenseFormData } from '~/schema/employee-expenses'
 import type { CreateEmployeeExpenseData, EmployeeExpense, UpdateEmployeeExpenseData } from '~/types/employee-expense'
+import { formatCurrency, removeNonNumeric } from '~/utils/formaters'
 
 interface EmployeeExpenseDialogContentProps {
     onSubmit: (data: CreateEmployeeExpenseData | UpdateEmployeeExpenseData) => Promise<void>
@@ -27,16 +28,17 @@ export function EmployeeExpenseDialogContent({
         register,
         handleSubmit,
         setValue,
+        control,
         formState: { errors },
     } = useForm<EmployeeExpenseFormData>({
         resolver: zodResolver(employeeExpenseSchema),
         defaultValues: {
             name: initialData?.name || '',
             jobId: initialData?.jobId || '',
-            baseSalary: initialData?.baseSalary || 0,
-            extraHours: initialData?.extraHours || 0,
-            grossSalary: initialData?.grossSalary || 0,
-            benefits: initialData?.benefits || 0,
+            baseSalary: initialData?.baseSalary || undefined,
+            extraHours: initialData?.extraHours || undefined,
+            transport: initialData?.transport || undefined,
+            meal: initialData?.meal || undefined,
         },
     })
 
@@ -48,9 +50,9 @@ export function EmployeeExpenseDialogContent({
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <Label htmlFor="name">Nome do Funcionário</Label>
                     <Input
                         id="name"
+                        label="Nome do Funcionário"
                         placeholder="Ex: João Silva"
                         {...register('name')}
                     />
@@ -84,13 +86,23 @@ export function EmployeeExpenseDialogContent({
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <Label htmlFor="baseSalary">Salário Base</Label>
-                    <Input
-                        id="baseSalary"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        {...register('baseSalary', { valueAsNumber: true })}
+                    <Controller
+                        control={control}
+                        name="baseSalary"
+                        render={({ field }) => {
+                            const { onChange, value, ...rest } = field
+                            const formattedValue = formatCurrency(value)
+                            return (
+                                <Input
+                                    id="baseSalary"
+                                    label="Salário Base"
+                                    placeholder="R$ 0,00"
+                                    value={formattedValue}
+                                    onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                    {...rest}
+                                />
+                            )
+                        }}
                     />
                     {errors.baseSalary && (
                         <p className="text-sm text-red-600 mt-1">{errors.baseSalary.message}</p>
@@ -98,13 +110,23 @@ export function EmployeeExpenseDialogContent({
                 </div>
 
                 <div>
-                    <Label htmlFor="extraHours">Horas Extras</Label>
-                    <Input
-                        id="extraHours"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        {...register('extraHours', { valueAsNumber: true })}
+                    <Controller
+                        control={control}
+                        name="extraHours"
+                        render={({ field }) => {
+                            const { onChange, value, ...rest } = field
+                            const formattedValue = formatCurrency(value)
+                            return (
+                                <Input
+                                    id="extraHours"
+                                    label="Horas Extras"
+                                    placeholder="R$ 0,00"
+                                    value={formattedValue}
+                                    onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                    {...rest}
+                                />
+                            )
+                        }}
                     />
                     {errors.extraHours && (
                         <p className="text-sm text-red-600 mt-1">{errors.extraHours.message}</p>
@@ -113,34 +135,52 @@ export function EmployeeExpenseDialogContent({
             </div>
 
             <div className="grid grid-cols-2 gap-4">
+                <Controller
+                    control={control}
+                    name="meal"
+                    render={({ field }) => {
+                        const { onChange, value, ...rest } = field
+                        const formattedValue = formatCurrency(value)
+                        return (
+                            <Input
+                                id="meal"
+                                label="Vale Refeição"
+                                placeholder="R$ 0,00"
+                                value={formattedValue}
+                                onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                {...rest}
+                            />
+                        )
+                    }}
+                />
+                {errors.meal && (
+                    <p className="text-sm text-red-600 mt-1">{errors.meal.message}</p>
+                )}
                 <div>
-                    <Label htmlFor="grossSalary">Salário Bruto</Label>
-                    <Input
-                        id="grossSalary"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        {...register('grossSalary', { valueAsNumber: true })}
+                    <Controller
+                        control={control}
+                        name="transport"
+                        render={({ field }) => {
+                            const { onChange, value, ...rest } = field
+                            const formattedValue = formatCurrency(value)
+                            return (
+                                <Input
+                                    id="transport"
+                                    label="Vale Transporte"
+                                    placeholder="R$ 0,00"
+                                    value={formattedValue}
+                                    onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                    {...rest}
+                                />
+                            )
+                        }}
                     />
-                    {errors.grossSalary && (
-                        <p className="text-sm text-red-600 mt-1">{errors.grossSalary.message}</p>
-                    )}
-                </div>
-
-                <div>
-                    <Label htmlFor="benefits">Benefícios/Descontos</Label>
-                    <Input
-                        id="benefits"
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        {...register('benefits', { valueAsNumber: true })}
-                    />
-                    {errors.benefits && (
-                        <p className="text-sm text-red-600 mt-1">{errors.benefits.message}</p>
+                    {errors.transport && (
+                        <p className="text-sm text-red-600 mt-1">{errors.transport.message}</p>
                     )}
                 </div>
             </div>
+
 
             <div className="flex justify-end gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
