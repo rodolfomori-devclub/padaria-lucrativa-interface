@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { Button } from '~/components/ui/button'
 import { DialogFooter } from '~/components/ui/dialog'
 import { Input as UIInput } from '~/components/ui/input'
@@ -8,7 +8,7 @@ import { Label } from '~/components/ui/label'
 import { inputSchema, type InputFormData } from '~/schema/inputs'
 import type { CreateInputData, Input } from '~/types/input'
 import { UNIT_MEASURE_LABELS, UnitMeasure } from '~/types/input'
-import { formatCurrency } from '~/utils/formaters'
+import { formatCurrency, removeNonNumeric } from '~/utils/formaters'
 
 interface InputDialogContentProps {
     input?: Input
@@ -24,17 +24,17 @@ export function InputDialogContent({ input, onSubmit, onCancel, isLoading }: Inp
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
-        reset,
         watch,
     } = useForm<InputFormData>({
         resolver: zodResolver(inputSchema),
         defaultValues: {
-            name: '',
-            price: 0,
-            packagingQuantity: 0,
-            unitMeasure: UnitMeasure.UNIDADE,
-            conversionFactor: 1,
+            name: input?.name || '',
+            price: input?.price || 0,
+            packagingQuantity: input?.packagingQuantity || 0,
+            unitMeasure: input?.unitMeasure || UnitMeasure.UNIDADE,
+            conversionFactor: input?.conversionFactor || 1,
         },
     })
 
@@ -53,27 +53,6 @@ export function InputDialogContent({ input, onSubmit, onCancel, isLoading }: Inp
         }
     }, [watchedPrice, watchedPackagingQuantity, watchedConversionFactor])
 
-    // Reset form when input changes
-    useEffect(() => {
-        if (input) {
-            reset({
-                name: input.name,
-                price: input.price,
-                packagingQuantity: input.packagingQuantity,
-                unitMeasure: input.unitMeasure,
-                conversionFactor: input.conversionFactor,
-            })
-        } else {
-            reset({
-                name: '',
-                price: 0,
-                packagingQuantity: 0,
-                unitMeasure: UnitMeasure.UNIDADE,
-                conversionFactor: 1,
-            })
-        }
-    }, [input, reset])
-
     const handleFormSubmit = async (data: InputFormData) => {
         await onSubmit(data)
     }
@@ -81,11 +60,11 @@ export function InputDialogContent({ input, onSubmit, onCancel, isLoading }: Inp
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
             <div>
-                <Label htmlFor="name">Nome *</Label>
                 <UIInput
                     id="name"
                     type="text"
-                    {...register('name')}
+                    label="Nome *"
+                    {...register('name', { required: 'Nome é obrigatório' })}
                     className={errors.name ? 'border-red-500' : ''}
                     placeholder="Digite o nome do insumo"
                 />
@@ -94,21 +73,32 @@ export function InputDialogContent({ input, onSubmit, onCancel, isLoading }: Inp
                 )}
             </div>
 
-            <div>
-                <Label htmlFor="price">Preço (R$) *</Label>
-                <UIInput
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    {...register('price', { valueAsNumber: true })}
-                    className={errors.price ? 'border-red-500' : ''}
-                    placeholder="0,00"
-                />
-                {errors.price && (
-                    <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
-                )}
-            </div>
+            <Controller
+                control={control}
+                name="price"
+                render={({ field }) => {
+                    const { onChange, value, ...fieldProps } = field
+
+                    const formattedValue = formatCurrency(value)
+
+                    return (
+                        <>
+                            <UIInput
+                                id="price"
+                                label="Preço (R$) *"
+                                {...fieldProps}
+                                value={formattedValue}
+                                onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                className={errors.price ? 'border-red-500' : ''}
+                                placeholder="0,00"
+                            />
+                            {errors.price && (
+                                <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+                            )}
+                        </>
+                    )
+                }}
+            />
 
             <div>
                 <Label htmlFor="packagingQuantity">Quantidade da Embalagem *</Label>

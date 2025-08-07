@@ -31,9 +31,9 @@ export function useCreateInputMutation() {
             )
             toast.success('Insumo criado com sucesso')
         },
-        onError: (_error, _variables, context) => {
+        onError: (error, _variables, context) => {
             queryClient.setQueryData(INPUTS_QUERY_KEY, context?.previousInputs)
-            toast.error('Erro ao criar insumo')
+            toast.error(error.message || 'Erro ao criar insumo')
         }
     })
 

@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { queryClient } from "~/lib/queryClient";
 import { inputService } from "~/services/inputs";
@@ -56,7 +57,7 @@ export function useUpdateInputMutation() {
 
             toast.success('Insumo atualizado com sucesso');
         },
-        onError: (_error, variables, context) => {
+        onError: (error, variables, context) => {
             // Rollback optimistic updates
             if (context?.previousInputs) {
                 queryClient.setQueryData(INPUTS_QUERY_KEY, context.previousInputs);
@@ -65,7 +66,7 @@ export function useUpdateInputMutation() {
                 queryClient.setQueryData([INPUTS_QUERY_KEY, variables.id], context.previousInput);
             }
 
-            toast.error('Erro ao atualizar insumo');
+            toast.error((error as AxiosError<{ message: string }>).response?.data.message || 'Erro ao atualizar insumo');
         }
     });
 
