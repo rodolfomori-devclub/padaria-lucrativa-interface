@@ -1,10 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button, Input, Label, Loading } from '~/components/ui'
+import { RecipesSelect } from '~/components/RecipesSelect'
+import { Button, Input, Loading } from '~/components/ui'
 import { Textarea } from '~/components/ui/textarea'
+import { useRecipes } from '~/hooks/recipes/useRecipes'
 import { lossControlSchema, type LossControlFormData } from '~/schema/loss-control'
 import type { CreateLossControlData, LossControl } from '~/types/loss-control'
+import { formatCurrency, formatDateForInput } from '~/utils/formaters'
 
 interface LossControlDialogContentProps {
     onSubmit: (data: CreateLossControlData) => Promise<void>
@@ -19,6 +22,7 @@ export function LossControlDialogContent({
     isLoading,
     lossControl,
 }: LossControlDialogContentProps) {
+    const { recipes } = useRecipes()
     const {
         register,
         handleSubmit,
@@ -29,34 +33,36 @@ export function LossControlDialogContent({
         resolver: zodResolver(lossControlSchema),
         defaultValues: lossControl
             ? {
-                productName: lossControl.productName,
-                unitPrice: lossControl.unitPrice,
-                quantity: lossControl.quantity,
-                totalValue: lossControl.totalValue,
-                day: lossControl.day,
+                recipeId: lossControl.recipeId,
+                quantity: lossControl.quantity || undefined,
+                totalValue: formatCurrency(lossControl.totalValue) || '',
+                day: formatDateForInput(lossControl.day),
                 observations: lossControl.observations || '',
             }
-            : {
-                unitPrice: 0,
-                quantity: 0,
-                totalValue: 0,
-            },
+            : {},
     })
 
-    const unitPrice = watch('unitPrice')
+    const chosenRecipe = useMemo(() => recipes.find(recipe => recipe.id === watch('recipeId')), [recipes, watch])
     const quantity = watch('quantity')
+    const totalValue = useMemo(() => {
+        if (!chosenRecipe || !quantity || quantity === 0) return 0;
+        return chosenRecipe.salePrice * quantity;
+    }, [chosenRecipe, quantity]);
 
     // Calculate total value automatically
     useEffect(() => {
-        if (unitPrice && quantity && unitPrice > 0 && quantity > 0) {
-            const calculatedTotal = unitPrice * quantity
-            setValue('totalValue', Number(calculatedTotal.toFixed(2)))
+        if (quantity && chosenRecipe) {
+            const calculatedTotal = quantity * (chosenRecipe?.salePrice || 0)
+            setValue('totalValue', formatCurrency(calculatedTotal))
         }
-    }, [unitPrice, quantity, setValue])
+    }, [quantity, setValue, chosenRecipe])
 
     const handleFormSubmit = async (data: LossControlFormData) => {
         await onSubmit({
             ...data,
+            productName: chosenRecipe?.name || '',
+            unitPrice: chosenRecipe?.salePrice || 0,
+            recipeId: chosenRecipe?.id || '',
             day: new Date(data.day).toISOString(),
         })
     }
@@ -64,56 +70,32 @@ export function LossControlDialogContent({
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor="productName">Nome do Produto *</Label>
-                <Input
-                    id="productName"
-                    placeholder="Digite o nome do produto"
-                    {...register('productName')}
-                    className={errors.productName ? 'border-red-500' : ''}
+                <RecipesSelect
+                    value={watch('recipeId')}
+                    label="Nome do Produto *"
+                    onChange={(value) => setValue('recipeId', value.id)}
                 />
-                {errors.productName && (
-                    <p className="mt-1 text-sm text-red-600">{errors.productName.message}</p>
-                )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor="unitPrice">Preço Unitário (R$) *</Label>
-                    <Input
-                        id="unitPrice"
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        placeholder="0,00"
-                        {...register('unitPrice', { valueAsNumber: true })}
-                        className={errors.unitPrice ? 'border-red-500' : ''}
-                    />
-                    {errors.unitPrice && (
-                        <p className="mt-1 text-sm text-red-600">{errors.unitPrice.message}</p>
-                    )}
-                </div>
-
-                <div className="space-y-2">
-                    <Label htmlFor="quantity">Quantidade *</Label>
-                    <Input
-                        id="quantity"
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        placeholder="0,00"
-                        {...register('quantity', { valueAsNumber: true })}
-                        className={errors.quantity ? 'border-red-500' : ''}
-                    />
-                    {errors.quantity && (
-                        <p className="mt-1 text-sm text-red-600">{errors.quantity.message}</p>
-                    )}
-                </div>
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="day">Dia *</Label>
+                <Input
+                    id="quantity"
+                    label="Quantidade *"
+                    type="number"
+                    placeholder="0,00"
+                    disabled={!chosenRecipe}
+                    {...register('quantity', { valueAsNumber: true })}
+                    className={errors.quantity ? 'border-red-500' : ''}
+                />
+                {errors.quantity && (
+                    <p className="mt-1 text-sm text-red-600">{errors.quantity.message}</p>
+                )}
+            </div>
+
+            <div className="space-y-2">
                 <Input
                     id="day"
+                    label="Dia *"
                     type="date"
                     {...register('day')}
                     className={errors.day ? 'border-red-500' : ''}
@@ -124,27 +106,21 @@ export function LossControlDialogContent({
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="totalValue">Valor Total (R$) *</Label>
                 <Input
                     id="totalValue"
-                    type="number"
-                    step="0.01"
-                    min="0.01"
+                    label="Valor Total (R$) *"
                     placeholder="0,00"
-                    {...register('totalValue', { valueAsNumber: true })}
+                    value={watch('totalValue') || formatCurrency(totalValue)}
                     className={`${errors.totalValue ? 'border-red-500' : ''} bg-gray-50`}
                     readOnly
                 />
-                {errors.totalValue && (
-                    <p className="mt-1 text-sm text-red-600">{errors.totalValue.message}</p>
-                )}
-                <p className="text-xs text-gray-500">Calculado automaticamente (Preço × Quantidade)</p>
+                <p className="text-xs text-gray-500">Calculado automaticamente (Preço de Venda Praticado × Quantidade)</p>
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="observations">Observações</Label>
                 <Textarea
                     id="observations"
+                    label="Observações"
                     rows={3}
                     placeholder="Observações sobre a perda"
                     {...register('observations')}

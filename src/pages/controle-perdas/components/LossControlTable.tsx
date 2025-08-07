@@ -9,16 +9,17 @@ import {
     TableRow,
 } from '~/components/ui/table'
 import type { LossControl } from '~/types/loss-control'
-import { formatCurrency, formatNumber } from '~/utils/formaters'
+import { formatCurrency, formatDateDDMMYYYY, formatNumber } from '~/utils/formaters'
 import { DeleteLossControlDialog } from './DeleteLossControlDialog'
 import { EditLossControlDialog } from './EditLossControlDialog'
 
 interface LossControlTableProps {
     lossControls: LossControl[]
     isLoading?: boolean
+    isGrouped?: boolean
 }
 
-export function LossControlTable({ lossControls, isLoading }: LossControlTableProps) {
+export function LossControlTable({ lossControls, isLoading, isGrouped = false }: LossControlTableProps) {
 
     if (isLoading) {
         return <TableSkeleton />
@@ -39,7 +40,7 @@ export function LossControlTable({ lossControls, isLoading }: LossControlTablePr
                         <TableHead>Valor Total</TableHead>
                         <TableHead>Data</TableHead>
                         <TableHead>Observações</TableHead>
-                        <TableHead className="text-center">Ações</TableHead>
+                        {!isGrouped && <TableHead className="text-center">Ações</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -50,17 +51,19 @@ export function LossControlTable({ lossControls, isLoading }: LossControlTablePr
                             <TableCell>{formatNumber(lossControl.quantity)}</TableCell>
                             <TableCell className="font-medium">{formatCurrency(lossControl.totalValue)}</TableCell>
                             <TableCell>
-                                {new Date(lossControl.day).toLocaleDateString('pt-BR')}
+                                {formatDateDDMMYYYY(lossControl.day)}
                             </TableCell>
                             <TableCell className="max-w-60 truncate" title={lossControl.observations || '-'}>
                                 {lossControl.observations || '-'}
                             </TableCell>
-                            <TableCell className="text-right">
-                                <div className="flex justify-end gap-2">
-                                    <EditLossControlDialog lossControl={lossControl} />
-                                    <DeleteLossControlDialog lossControl={lossControl} />
-                                </div>
-                            </TableCell>
+                            {!isGrouped && (
+                                <TableCell className="text-right">
+                                    <div className="flex justify-end gap-2">
+                                        <EditLossControlDialog lossControl={lossControl} />
+                                        <DeleteLossControlDialog lossControl={lossControl} />
+                                    </div>
+                                </TableCell>
+                            )}
                         </TableRow>
                     ))}
                 </TableBody>

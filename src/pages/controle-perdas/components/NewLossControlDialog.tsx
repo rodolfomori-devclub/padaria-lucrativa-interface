@@ -16,13 +16,14 @@ export function NewLossControlDialog() {
     const [isOpen, setIsOpen] = useState(false)
     const { createLossControl, isPending: isCreating } = useCreateLossControlMutation()
 
-    const handleSubmit = async ({ productName, unitPrice, quantity, observations, day }: CreateLossControlData) => {
+    const handleSubmit = async ({ recipeId, unitPrice, quantity, observations, day, productName }: CreateLossControlData) => {
         await createLossControl({
-            productName,
+            recipeId,
             unitPrice,
             quantity,
             observations,
             day,
+            productName,
         })
         setIsOpen(false)
     }
