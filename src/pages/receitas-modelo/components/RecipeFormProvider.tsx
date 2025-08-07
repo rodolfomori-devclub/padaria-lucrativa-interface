@@ -23,6 +23,7 @@ export const RecipeFormProvider = ({
             yield: defaultValues?.yield ?? 1,
             unitMeasure: defaultValues?.unitMeasure ?? UnitMeasure.UNIDADE,
             inputs: defaultValues?.inputs ?? [],
+            salePrice: defaultValues?.salePrice || 0,
         },
     })
 

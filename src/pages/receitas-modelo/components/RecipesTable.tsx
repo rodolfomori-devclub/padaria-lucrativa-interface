@@ -13,7 +13,7 @@ import {
 import { ROUTES } from '~/routes/routes'
 import { UNIT_MEASURE_LABELS } from '~/types/input'
 import type { Recipe } from '~/types/recipe'
-import { calculateSuggestedPrice, calculateUnitCost } from '~/utils/calculators'
+import { calculateUnitCost } from '~/utils/calculators'
 import { formatCurrency } from '~/utils/formaters'
 import { DeleteRecipeDialog } from './DeleteRecipeDialog'
 
@@ -36,29 +36,26 @@ export const RecipesTable = ({ recipes }: RecipesTableProps) => {
                         <TableHead>Nome</TableHead>
                         <TableHead>Rendimento</TableHead>
                         <TableHead>Unidade</TableHead>
-                        <TableHead>Custo Total</TableHead>
                         <TableHead>Custo Unitário</TableHead>
-                        <TableHead>Preço Sugerido</TableHead>
-                        <TableHead>Ingredientes</TableHead>
+                        <TableHead>Preço de Custo</TableHead>
+                        <TableHead>Preço de Venda Sugerido</TableHead>
+                        <TableHead>Preço de Venda Praticado</TableHead>
                         <TableHead className="text-center">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {recipes.map((recipe) => {
                         const unitCost = calculateUnitCost(recipe.totalCost, recipe.yield)
-                        const suggestedPrice = calculateSuggestedPrice(recipe.totalCost)
 
                         return (
                             <TableRow key={recipe.id}>
                                 <TableCell className="font-medium">{recipe.name}</TableCell>
                                 <TableCell>{recipe.yield}</TableCell>
                                 <TableCell>{UNIT_MEASURE_LABELS[recipe.unitMeasure]}</TableCell>
-                                <TableCell>{formatCurrency(recipe.totalCost)}</TableCell>
                                 <TableCell>{formatCurrency(unitCost)}</TableCell>
-                                <TableCell className="font-medium text-green-600">
-                                    {formatCurrency(suggestedPrice)}
-                                </TableCell>
-                                <TableCell>{recipe.inputs?.length} ing.</TableCell>
+                                <TableCell>{formatCurrency(recipe.totalCost)}</TableCell>
+                                <TableCell>{formatCurrency(unitCost * 4)}</TableCell>
+                                <TableCell>{formatCurrency(recipe.salePrice)}</TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-2">
                                         <Link to={`${ROUTES.RECEITAS_MODELO_EDITAR}/${recipe.id}`}>

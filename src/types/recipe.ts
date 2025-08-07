@@ -11,6 +11,7 @@ export interface Recipe {
     yield: number
     unitMeasure: UnitMeasure
     totalCost: number
+    salePrice: number
     inputs: RecipeInput[]
     isActive: boolean
     createdAt: Date

@@ -116,7 +116,7 @@ export const RecipeIngredients = () => {
                             type="button"
                             onClick={handleAddIngredient}
                             disabled={!newIngredient.inputId || newIngredient.quantity <= 0}
-                            className="w-full"
+                            className="w-full bg-transparent border border-highlight text-highlight hover:bg-highlight/10 "
                         >
                             <Plus className="h-4 w-4 mr-2" />
                             Adicionar

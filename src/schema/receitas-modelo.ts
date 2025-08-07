@@ -11,6 +11,7 @@ export const recipeFormSchema = z.object({
     yield: z.number().min(0.001, 'Rendimento deve ser maior que zero'),
     unitMeasure: z.nativeEnum(UnitMeasure, { required_error: 'Unidade de medida é obrigatória' }),
     inputs: z.array(recipeInputSchema).min(1, 'Deve ter pelo menos um ingrediente'),
+    salePrice: z.number().min(0, 'Preço de venda praticado deve ser maior que zero'),
 })
 
 export type RecipeFormData = z.infer<typeof recipeFormSchema>

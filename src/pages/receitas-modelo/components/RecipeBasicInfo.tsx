@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import {
@@ -10,10 +10,12 @@ import {
 } from '~/components/ui/select'
 import type { RecipeFormData } from '~/schema/receitas-modelo'
 import { UNIT_MEASURE_LABELS, UnitMeasure } from '~/types/input'
+import { formatCurrency, removeNonNumeric } from '~/utils/formaters'
 
 export const RecipeBasicInfo = () => {
     const {
         register,
+        control,
         formState: { errors },
         setValue,
         watch
@@ -27,9 +29,9 @@ export const RecipeBasicInfo = () => {
 
             <div className="space-y-4">
                 <div>
-                    <Label htmlFor="name">Nome da Receita *</Label>
                     <Input
                         id="name"
+                        label="Nome da Receita *"
                         {...register('name')}
                         placeholder="Ex: Pão Francês"
                     />
@@ -39,10 +41,10 @@ export const RecipeBasicInfo = () => {
                 </div>
 
                 <div>
-                    <Label htmlFor="yield">Rendimento *</Label>
                     <Input
                         id="yield"
                         type="number"
+                        label="Rendimento *"
                         step="0.001"
                         {...register('yield', { valueAsNumber: true })}
                         placeholder="Quantidade que a receita produz"
@@ -52,6 +54,28 @@ export const RecipeBasicInfo = () => {
                     )}
                 </div>
 
+                <Controller
+                    control={control}
+                    name="salePrice"
+                    render={({ field }) => {
+                        const { onChange, value, ...fieldProps } = field
+                        const formattedValue = formatCurrency(value)
+
+                        return (
+                            <Input
+                                id="salePrice"
+                                label="Preço de venda praticado *"
+                                {...fieldProps}
+                                value={formattedValue}
+                                onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                placeholder="0,00"
+                            />
+                        )
+                    }}
+                />
+                {errors.salePrice && (
+                    <p className="text-sm text-red-500 mt-1">{errors.salePrice.message}</p>
+                )}
                 <div>
                     <Label htmlFor="unitMeasure">Unidade de Medida *</Label>
                     <Select

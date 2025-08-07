@@ -28,12 +28,7 @@ export const RecipeFormPage = () => {
             if (isEditing && id) {
                 await updateRecipe({
                     id,
-                    data: {
-                        name: data.name,
-                        yield: data.yield,
-                        unitMeasure: data.unitMeasure,
-                        inputs: data.inputs
-                    }
+                    data
                 })
             } else {
                 await createInput(data)
