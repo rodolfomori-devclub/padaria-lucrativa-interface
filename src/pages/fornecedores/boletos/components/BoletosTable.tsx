@@ -12,7 +12,7 @@ import {
 } from '~/components/ui/table'
 import { usePayBoleto } from '~/hooks/boletos/usePayBoleto'
 import type { Boleto } from '~/types/boleto'
-import { formatCurrency } from '~/utils/formaters'
+import { formatCurrency, formatDateDDMMYYYY } from '~/utils/formaters'
 import { DeleteBoletoDialog } from './DeleteBoletoDialog'
 import { EditBoletoDialog } from './EditBoletoDialog'
 
@@ -52,7 +52,7 @@ export function BoletosTable({ boletos, isLoading }: BoletosTableProps) {
                             <TableCell className="font-medium">{boleto.supplier.name}</TableCell>
                             <TableCell>{formatCurrency(boleto.value)}</TableCell>
                             <TableCell>
-                                {new Date(boleto.dueDate).toLocaleDateString('pt-BR')}
+                                {formatDateDDMMYYYY(boleto.dueDate)}
                             </TableCell>
                             <TableCell>
                                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${boleto.paid
@@ -63,10 +63,7 @@ export function BoletosTable({ boletos, isLoading }: BoletosTableProps) {
                                 </span>
                             </TableCell>
                             <TableCell>
-                                {boleto.paymentDate ?
-                                    new Date(boleto.paymentDate).toLocaleDateString('pt-BR') :
-                                    '-'
-                                }
+                                {formatDateDDMMYYYY(boleto.paymentDate)}
                             </TableCell>
                             <TableCell className="max-w-52 truncate" title={boleto.observations || '-'}>
                                 {boleto.observations || '-'}

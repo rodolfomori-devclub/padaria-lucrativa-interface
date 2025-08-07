@@ -6,6 +6,7 @@ import { Textarea } from '~/components/ui/textarea'
 import { useSuppliers } from '~/hooks/suppliers/useSuppliers'
 import { boletoSchema, type BoletoFormData } from '~/schema/boletos'
 import type { Boleto, CreateBoletoData } from '~/types/boleto'
+import { formatCurrency, formatDateForInput, removeNonNumeric } from '~/utils/formaters'
 
 interface BoletoDialogContentProps {
     onSubmit: (data: CreateBoletoData) => Promise<void>
@@ -32,8 +33,8 @@ export function BoletoDialogContent({
         defaultValues: boleto
             ? {
                 supplierId: boleto.supplierId,
-                value: boleto.value,
-                dueDate: boleto.dueDate,
+                value: boleto.value || 0,
+                dueDate: formatDateForInput(boleto.dueDate),
                 observations: boleto.observations || '',
             }
             : undefined,
@@ -77,26 +78,36 @@ export function BoletoDialogContent({
                 />
             </div>
 
-            <div className="space-y-2">
-                <Label htmlFor="value">Valor (R$) *</Label>
-                <Input
-                    id="value"
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    placeholder="0,00"
-                    {...register('value', { valueAsNumber: true })}
-                    className={errors.value ? 'border-red-500' : ''}
-                />
-                {errors.value && (
-                    <p className="mt-1 text-sm text-red-600">{errors.value.message}</p>
-                )}
-            </div>
+            <Controller
+                control={control}
+                name="value"
+                render={({ field }) => {
+                    const { onChange, value, ...fieldProps } = field
+                    const formattedValue = formatCurrency(value)
+
+                    return (
+                        <div className="space-y-2">
+                            <Input
+                                id="value"
+                                label="Valor (R$) *"
+                                placeholder="0,00"
+                                {...fieldProps}
+                                value={formattedValue}
+                                onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                                className={errors.value ? 'border-red-500' : ''}
+                            />
+                            {errors.value && (
+                                <p className="mt-1 text-sm text-red-600">{errors.value.message}</p>
+                            )}
+                        </div>
+                    )
+                }}
+            />
 
             <div className="space-y-2">
-                <Label htmlFor="dueDate">Data de Vencimento *</Label>
                 <Input
                     id="dueDate"
+                    label="Data de Vencimento *"
                     type="date"
                     {...register('dueDate')}
                     className={errors.dueDate ? 'border-red-500' : ''}

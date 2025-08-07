@@ -23,6 +23,19 @@ export const formatMonthYear = (date: Date) => {
     return format(date, 'MM/yyyy')
 }
 
+export const formatDateDDMMYYYY = (date?: string) => {
+    if (!date) return '-'
+    return date.split('T')[0].split('-').reverse().join('/')
+}
+
+export const formatDateForInput = (date?: string) => {
+    if (!date) return '';
+    // Get local date parts
+    const [year, month, day] = date.split('T')[0].split('-')
+    const formattedDate = `${year}-${month}-${day}`
+    return formattedDate
+}
+
 export const removeNonNumeric = (value: string): string => {
     if (!value) return ''
     return value.replace(/\D/g, '')
