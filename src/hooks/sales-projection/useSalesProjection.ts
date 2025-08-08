@@ -73,8 +73,8 @@ export const useSalesProjection = (filters: SalesProjectionFilters) => {
   // Helper function to save all changes in a single batch request
   const batchUpdateProjections = async (projections: Array<{
     day: string;
-    salesValue: number;
-    purchaseValue: number;
+    salesValue?: number;
+    purchaseValue?: number;
   }>) => {
     try {
       await batchUpdateAsync({ projections });

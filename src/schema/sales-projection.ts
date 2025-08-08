@@ -21,12 +21,8 @@ export const salesProjectionSchema = z.object({
   projections: z.array(
     z.object({
       day: z.string().min(1, "Data é obrigatória"),
-      salesValue: z
-        .number()
-        .min(0, "Valor de venda deve ser maior ou igual a zero"),
-      purchaseValue: z
-        .number()
-        .min(0, "Valor de compra deve ser maior ou igual a zero"),
+      salesValue: z.number().min(0, "Valor de venda deve ser maior ou igual a zero").optional(),
+      purchaseValue: z.number().min(0, "Valor de compra deve ser maior ou igual a zero").optional(),
     })
   ),
 });

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { TableEmptyState } from "~/components/Table/EmptyState";
 import { TableSkeleton } from "~/components/Table/Skeleton";
 import { Button } from "~/components/ui/button";
@@ -19,6 +19,7 @@ import {
   salesProjectionSchema,
   type SalesProjectionFormData,
 } from "~/schema/sales-projection";
+import { formatCurrency, removeNonNumeric } from "~/utils/formaters";
 
 export function SalesProjectionTable() {
   const { filters } = useSalesProjectionFilters();
@@ -34,8 +35,8 @@ export function SalesProjectionTable() {
     () => ({
       projections: dayProjections.map((proj) => ({
         day: proj.day,
-        salesValue: proj.salesValue,
-        purchaseValue: proj.purchaseValue,
+        salesValue: proj.salesValue || undefined,
+        purchaseValue: proj.purchaseValue || undefined,
       })),
     }),
     [dayProjections]
@@ -148,19 +149,26 @@ export function SalesProjectionTable() {
                     {dayNumber}
                   </TableCell>
                   <TableCell>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="0,00"
-                      {...register(`projections.${index}.salesValue`, {
-                        valueAsNumber: true,
-                      })}
-                      className={
-                        errors.projections?.[index]?.salesValue
-                          ? "border-red-500"
-                          : ""
-                      }
+                    <Controller
+                      control={control}
+                      name={`projections.${index}.salesValue`}
+                      render={({ field }) => {
+                        const { onChange, value } = field
+                        const formattedValue = formatCurrency(value)
+                        return (
+                          <Input
+                            placeholder="0,00"
+                            {...field}
+                            value={formattedValue}
+                            onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                            className={
+                              errors.projections?.[index]?.salesValue
+                                ? "border-red-500"
+                                : ""
+                            }
+                          />
+                        )
+                      }}
                     />
                     {errors.projections?.[index]?.salesValue && (
                       <p className="text-sm text-red-600 mt-1">
@@ -169,25 +177,27 @@ export function SalesProjectionTable() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="0,00"
-                      {...register(`projections.${index}.purchaseValue`, {
-                        valueAsNumber: true,
-                      })}
-                      className={
-                        errors.projections?.[index]?.purchaseValue
-                          ? "border-red-500"
-                          : ""
-                      }
+                    <Controller
+                      control={control}
+                      name={`projections.${index}.purchaseValue`}
+                      render={({ field }) => {
+                        const { onChange, value } = field
+                        const formattedValue = formatCurrency(value)
+                        return (
+                          <Input
+                            placeholder="0,00"
+                            {...field}
+                            value={formattedValue}
+                            onChange={(e) => onChange(Number(removeNonNumeric(e.target.value)))}
+                            className={
+                              errors.projections?.[index]?.purchaseValue
+                                ? "border-red-500"
+                                : ""
+                            }
+                          />
+                        )
+                      }}
                     />
-                    {errors.projections?.[index]?.purchaseValue && (
-                      <p className="text-sm text-red-600 mt-1">
-                        {errors.projections[index]?.purchaseValue?.message}
-                      </p>
-                    )}
                   </TableCell>
                 </TableRow>
               );
