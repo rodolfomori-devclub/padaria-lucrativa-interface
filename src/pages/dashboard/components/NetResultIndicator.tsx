@@ -22,7 +22,7 @@ export function NetResultIndicator({ netResult, isLoading = false }: NetResultIn
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Resultado Projetado</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <IndicatorCard
-                    title="Lucro/Prejuízo"
+                    title="Resultado Previsto"
                     value={formatCurrency(netResult.value)}
                     subtitle={getNetResultStatus(netResult.value, netResult.margin)}
                     color={getResultColor(netResult.value)}

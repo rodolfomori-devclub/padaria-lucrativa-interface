@@ -9,18 +9,18 @@ export function SalesIndicators({ salesData, isLoading = false }: SalesIndicator
     const daysInMonth = getDaysInMonth(currentDate.getMonth() + 1, currentDate.getFullYear());
 
     return (
-        <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Indicadores de Vendas</h2>
+        <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Previsão de Compras e Vendas</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <IndicatorCard
-                    title="Média Venda Diária"
+                    title="Média de Vendas Diária"
                     value={formatCurrency(salesData.dailyAverage)}
                     subtitle={getSalesStatus(salesData.salesDays, daysInMonth)}
                     icon={DollarSign}
                     isLoading={isLoading}
                 />
                 <IndicatorCard
-                    title="Previsão Mensal"
+                    title="Previsão de Vendas Mensal"
                     value={formatCurrency(salesData.monthlyForecast)}
                     subtitle={
                         salesData.salesDays === daysInMonth

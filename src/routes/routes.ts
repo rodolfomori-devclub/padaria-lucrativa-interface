@@ -63,7 +63,7 @@ export interface NavItem {
 // Sidebar navigation configuration
 export const SIDEBAR_NAVIGATION: NavItem[] = [
   {
-    name: "Dashboard",
+    name: "Resultado Previsto",
     href: ROUTES.DASHBOARD,
     icon: Home,
   },

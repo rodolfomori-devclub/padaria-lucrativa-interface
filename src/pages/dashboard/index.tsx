@@ -4,6 +4,7 @@ import type { DashboardFilters } from "~/types/dashboard";
 import { DashboardFilters as DashboardFiltersComponent } from "./components/DashboardFilters";
 import { FinancialIndicators } from "./components/FinancialIndicators";
 import { NetResultIndicator } from "./components/NetResultIndicator";
+import { PurchasesIndicators } from "./components/PurchasesIndicators";
 import { SalesIndicators } from "./components/SalesIndicators";
 
 export function DashboardPage() {
@@ -69,10 +70,16 @@ export function DashboardPage() {
             {dashboardData ? (
                 <>
                     {/* Sales Indicators */}
-                    <SalesIndicators
-                        salesData={dashboardData.salesIndicators}
-                        isLoading={isLoading}
-                    />
+                    <div className="space-y-4 mb-5">
+                        <SalesIndicators
+                            salesData={dashboardData.salesIndicators}
+                            isLoading={isLoading}
+                        />
+                        <PurchasesIndicators
+                            purchasesData={dashboardData.purchasesIndicators}
+                            isLoading={isLoading}
+                        />
+                    </div>
 
                     {/* Financial Indicators */}
                     <FinancialIndicators

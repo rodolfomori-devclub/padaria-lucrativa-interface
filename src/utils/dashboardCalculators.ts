@@ -10,6 +10,13 @@ export interface SalesIndicators {
     salesDays: number;
 }
 
+export interface PurchasesIndicators {
+    dailyAverage: number;
+    monthlyForecast: number;
+    actualPurchases: number;
+    purchasesDays: number;
+}
+
 export interface FinancialIndicators {
     fixedExpenses: FinancialIndicator;
     variableExpenses: FinancialIndicator;
@@ -26,6 +33,7 @@ export interface NetResult {
 
 export interface DashboardData {
     salesIndicators: SalesIndicators;
+    purchasesIndicators: PurchasesIndicators;
     financialIndicators: FinancialIndicators;
     netResult: NetResult;
 }
