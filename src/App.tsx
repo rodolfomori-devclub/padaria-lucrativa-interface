@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
 import { AppLayout } from "./components/AppLayout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import {
@@ -14,6 +15,7 @@ import {
   ReceitasModeloPage,
   RecipeFormPage,
 } from "./pages";
+import { PlansPage } from "./pages/admin/planos";
 import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
 import {
   DespesasFixasPage,
@@ -95,7 +97,29 @@ function App() {
               path={ROUTES.PROJECAO_VENDAS}
               element={<ProjecaoVendasPage />}
             />
+            {/* <Route
+              path={ROUTES.MIX_DE_MARGENS}
+              element={
+                <PlanProtectedRoute requiredPlan={PlanType.PRO}>
+                  <MixMargensPage />
+                </PlanProtectedRoute>
+              }
+            /> */}
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+          </Route>
+
+          {/* Admin Routes */}
+          <Route
+            path="/"
+            element={
+              <AdminProtectedRoute>
+                <AppLayout>
+                  <Outlet />
+                </AppLayout>
+              </AdminProtectedRoute>
+            }
+          >
+            <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} />
           </Route>
         </Route>
         {/* Default redirect */}

@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   Calculator,
+  ChartNoAxesCombined,
   ChefHat,
   FileText,
   Home,
@@ -50,6 +51,15 @@ export const ROUTES = {
 
   // Projeção de Vendas
   PROJECAO_VENDAS: "/projecao-vendas",
+
+  // Mix de Margens
+  MIX_DE_MARGENS: "/mix-de-margens",
+
+  // Admin routes
+  ADMIN_CLIENTES: "/admin/clientes",
+  ADMIN_PLANOS: "/admin/planos",
+  ADMIN_FUNCIONARIOS: "/admin/funcionarios",
+  ADMIN_CADASTROS_GERAIS: "/admin/cadastros-gerais",
 } as const;
 
 // Navigation item type
@@ -61,7 +71,7 @@ export interface NavItem {
 }
 
 // Sidebar navigation configuration
-export const SIDEBAR_NAVIGATION: NavItem[] = [
+export const BASIC_SIDEBAR_NAVIGATION: NavItem[] = [
   {
     name: "Resultado Previsto",
     href: ROUTES.DASHBOARD,
@@ -139,6 +149,38 @@ export const SIDEBAR_NAVIGATION: NavItem[] = [
     name: "Projeção de Vendas",
     href: ROUTES.PROJECAO_VENDAS,
     icon: TrendingUp,
+  },
+];
+
+export const PRO_SIDEBAR_NAVIGATION: NavItem[] = [
+  ...BASIC_SIDEBAR_NAVIGATION,
+  {
+    name: "Mix de Margens",
+    href: ROUTES.MIX_DE_MARGENS,
+    icon: ChartNoAxesCombined,
+  },
+];
+
+export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
+  {
+    name: "Clientes",
+    href: ROUTES.ADMIN_CLIENTES,
+    icon: Users,
+  },
+  {
+    name: "Planos",
+    href: ROUTES.ADMIN_PLANOS,
+    icon: Package,
+  },
+  {
+    name: "Funcionários",
+    href: ROUTES.ADMIN_FUNCIONARIOS,
+    icon: User,
+  },
+  {
+    name: "Cadastros Gerais",
+    href: ROUTES.ADMIN_CADASTROS_GERAIS,
+    icon: Settings,
   },
 ];
 

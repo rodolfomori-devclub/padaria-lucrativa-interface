@@ -1,3 +1,5 @@
+import type { Plan } from "./plan"
+
 export enum UserRole {
     ADMIN = 'ADMIN',
     EMPLOYEE = 'EMPLOYEE',
@@ -11,4 +13,5 @@ export type User = {
     role: UserRole
     phone: string
     createdAt: string
+    plan?: Plan
 }
