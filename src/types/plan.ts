@@ -13,4 +13,19 @@ export interface Plan {
     expiresAt: string;
     createdAt: string;
     updatedAt: string;
+    usersCount: number;
+}
+
+export interface CreatePlanData {
+    title: string;
+    description?: string;
+    type: PlanType;
+    price: number;
+}
+
+export interface UpdatePlanData {
+    title?: string;
+    description?: string;
+    type?: PlanType;
+    price?: number;
 }

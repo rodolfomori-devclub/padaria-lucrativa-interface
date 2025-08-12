@@ -8,9 +8,6 @@ import { PurchasesIndicators } from "./components/PurchasesIndicators";
 import { SalesIndicators } from "./components/SalesIndicators";
 
 export function DashboardPage() {
-    const user = localStorage.getItem('user');
-    const userData = user ? JSON.parse(user) : null;
-
     // Dashboard filters state
     const [filters, setFilters] = useState<DashboardFilters>({
         month: new Date().getMonth() + 1,
@@ -30,25 +27,6 @@ export function DashboardPage() {
                 <h1 className="text-3xl font-bold text-base">Dashboard</h1>
                 <p className="text-gray-600 mt-2">Visão geral do desempenho da padaria</p>
             </div>
-
-            {userData && (
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-                    <h2 className="text-xl font-semibold text-base mb-4">Informações do Usuário</h2>
-                    <div className="space-y-2">
-                        <p className="text-gray-700">
-                            <span className="font-medium">Nome:</span> {userData.nome}
-                        </p>
-                        <p className="text-gray-700">
-                            <span className="font-medium">E-mail:</span> {userData.email}
-                        </p>
-                        {userData.telefone && (
-                            <p className="text-gray-700">
-                                <span className="font-medium">Telefone:</span> {userData.telefone}
-                            </p>
-                        )}
-                    </div>
-                </div>
-            )}
 
             {/* Dashboard Filters */}
             <DashboardFiltersComponent

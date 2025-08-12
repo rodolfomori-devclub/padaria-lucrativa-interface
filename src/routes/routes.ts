@@ -167,11 +167,11 @@ export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
     href: ROUTES.ADMIN_CLIENTES,
     icon: Users,
   },
-  {
-    name: "Planos",
-    href: ROUTES.ADMIN_PLANOS,
-    icon: Package,
-  },
+  // {
+  //   name: "Planos",
+  //   href: ROUTES.ADMIN_PLANOS,
+  //   icon: Package,
+  // },
   {
     name: "Funcionários",
     href: ROUTES.ADMIN_FUNCIONARIOS,

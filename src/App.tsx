@@ -15,7 +15,6 @@ import {
   ReceitasModeloPage,
   RecipeFormPage,
 } from "./pages";
-import { PlansPage } from "./pages/admin/planos";
 import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
 import {
   DespesasFixasPage,
@@ -119,7 +118,7 @@ function App() {
               </AdminProtectedRoute>
             }
           >
-            <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} />
+            {/* <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} /> */}
           </Route>
         </Route>
         {/* Default redirect */}
