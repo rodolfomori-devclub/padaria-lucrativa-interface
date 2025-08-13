@@ -1,6 +1,18 @@
 import { PlanType } from "~/types/plan";
 import { UserRole, type User } from "~/types/user";
 
+
+export const plansTypes = [
+    {
+        label: 'Básico',
+        value: PlanType.BASIC,
+    },
+    {
+        label: 'Mix de Margens',
+        value: PlanType.PRO,
+    },
+]
+
 export function getUserPlan(user: User | null): PlanType | null {
     if (!user || user.role !== UserRole.CLIENT) {
         return null;

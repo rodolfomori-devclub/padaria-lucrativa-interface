@@ -28,7 +28,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     // If user is authenticated and trying to access auth pages, redirect to dashboard
     const isStaff = user?.role === UserRole.ADMIN || user?.role === UserRole.EMPLOYEE;
     if (user && isAuthPage) {
-        return isStaff ? <Navigate to={ROUTES.ADMIN_PLANOS} replace /> : <Navigate to={ROUTES.DASHBOARD} replace />
+        return isStaff ? <Navigate to={ROUTES.ADMIN_CLIENTES} replace /> : <Navigate to={ROUTES.DASHBOARD} replace />
     }
 
     return <>{children}</>
