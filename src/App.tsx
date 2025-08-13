@@ -15,6 +15,8 @@ import {
   ReceitasModeloPage,
   RecipeFormPage,
 } from "./pages";
+import { ClientsPage } from "./pages/admin/clientes";
+import { EmployeesPage } from "./pages/admin/funcionarios";
 import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
 import {
   DespesasFixasPage,
@@ -119,10 +121,10 @@ function App() {
             }
           >
             {/* <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} /> */}
+            <Route path={ROUTES.ADMIN_CLIENTES} element={<ClientsPage />} />
+            <Route path={ROUTES.ADMIN_FUNCIONARIOS} element={<EmployeesPage />} />
           </Route>
         </Route>
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>
   );

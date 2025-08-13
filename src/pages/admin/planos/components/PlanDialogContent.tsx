@@ -7,6 +7,7 @@ import { Label } from '~/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { PlanType, type CreatePlanData, type Plan } from '~/types/plan'
 import { formatCurrency, removeNonNumeric } from '~/utils/formaters'
+import { plansTypes } from '~/utils/plans'
 
 const planSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório'),
@@ -43,16 +44,6 @@ export function PlanDialogContent({ onSubmit, onCancel, isLoading, initialData }
         onSubmit(data)
     }
 
-    const plansTypes = [
-        {
-            label: 'Básico',
-            value: PlanType.BASIC,
-        },
-        {
-            label: 'Pro',
-            value: PlanType.PRO,
-        },
-    ]
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">

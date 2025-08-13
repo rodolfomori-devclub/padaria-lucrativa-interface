@@ -83,3 +83,12 @@ export const isValidDocumentLength = (document: string): boolean => {
     const numbers = removeNonNumeric(document)
     return numbers.length === 11 || numbers.length === 14
 }
+
+
+export const formatPhone = (value: string) => {
+    const numbers = value.replace(/\D/g, '')
+    if (numbers.length <= 10) {
+        return numbers.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
+    }
+    return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+}
