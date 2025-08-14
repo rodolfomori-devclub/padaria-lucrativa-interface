@@ -14,7 +14,7 @@ export const plansTypes = [
 ]
 
 export function getUserPlan(user: User | null): PlanType | null {
-    if (!user || user.role !== UserRole.CLIENT) {
+    if (!user) {
         return null;
     }
     return user.plan?.type || PlanType.BASIC;
@@ -22,6 +22,7 @@ export function getUserPlan(user: User | null): PlanType | null {
 
 export function hasProAccess(user: User | null): boolean {
     const plan = getUserPlan(user);
+    console.log({ plan });
     return plan === PlanType.PRO;
 }
 

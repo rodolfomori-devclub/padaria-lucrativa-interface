@@ -1,12 +1,14 @@
 import {
   AlertTriangle,
   Calculator,
+  ChartCandlestick,
   ChartNoAxesCombined,
   ChefHat,
   FileText,
   Home,
   Package,
   Settings,
+  TableProperties,
   TrendingUp,
   Truck,
   User,
@@ -54,6 +56,7 @@ export const ROUTES = {
 
   // Mix de Margens
   MIX_DE_MARGENS: "/mix-de-margens",
+  MIX_DE_MARGENS_PROJECAO: "/mix-projecao",
 
   // Admin routes
   ADMIN_CLIENTES: "/admin/clientes",
@@ -156,8 +159,19 @@ export const PRO_SIDEBAR_NAVIGATION: NavItem[] = [
   ...BASIC_SIDEBAR_NAVIGATION,
   {
     name: "Mix de Margens",
-    href: ROUTES.MIX_DE_MARGENS,
     icon: ChartNoAxesCombined,
+    children: [
+      {
+        name: "Famílias",
+        href: ROUTES.MIX_DE_MARGENS,
+        icon: TableProperties,
+      },
+      {
+        name: "Projeção",
+        href: ROUTES.MIX_DE_MARGENS_PROJECAO,
+        icon: ChartCandlestick,
+      },
+    ],
   },
 ];
 
@@ -177,11 +191,11 @@ export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
     href: ROUTES.ADMIN_FUNCIONARIOS,
     icon: User,
   },
-  {
-    name: "Cadastros Gerais",
-    href: ROUTES.ADMIN_CADASTROS_GERAIS,
-    icon: Settings,
-  },
+  // {
+  //   name: "Cadastros Gerais",
+  //   href: ROUTES.ADMIN_CADASTROS_GERAIS,
+  //   icon: Settings,
+  // },
 ];
 
 // User menu configuration

@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
 import { AppLayout } from "./components/AppLayout";
+import { PlanProtectedRoute } from "./components/PlanProtectedRoute";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import {
   DashboardPage,
@@ -26,8 +27,10 @@ import { MargensLucroPage } from "./pages/cadastros-gerais/MargensLucro";
 import { ControlePerdasPage } from "./pages/controle-perdas";
 import { CargosPage, DespesasPessoalPage } from "./pages/despesas-pessoal";
 import { BoletosPage, FornecedoresPage } from "./pages/fornecedores";
+import { MixDeMargensProjeção, MixPages } from "./pages/mix-de-margens";
 import { ProjecaoVendasPage } from "./pages/projecao-vendas";
 import { ROUTES } from "./routes/routes";
+import { PlanType } from "./types/plan";
 
 function App() {
   return (
@@ -98,14 +101,18 @@ function App() {
               path={ROUTES.PROJECAO_VENDAS}
               element={<ProjecaoVendasPage />}
             />
-            {/* <Route
+            <Route
               path={ROUTES.MIX_DE_MARGENS}
               element={
                 <PlanProtectedRoute requiredPlan={PlanType.PRO}>
-                  <MixMargensPage />
+                  <MixPages />
                 </PlanProtectedRoute>
               }
-            /> */}
+            />
+            <Route
+              path={ROUTES.MIX_DE_MARGENS_PROJECAO}
+              element={<MixDeMargensProjeção />}
+            />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
           </Route>
 

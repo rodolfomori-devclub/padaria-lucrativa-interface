@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "~/contexts/AuthContext";
 import { ROUTES } from "~/routes/routes";
 import { PlanType } from "~/types/plan";
-import { shouldShowFeature } from "~/utils/plans";
+import { hasProAccess, shouldShowFeature } from "~/utils/plans";
 
 interface PlanProtectedRouteProps {
     children: ReactNode;
@@ -17,8 +17,8 @@ export function PlanProtectedRoute({
     fallbackRoute = ROUTES.DASHBOARD
 }: PlanProtectedRouteProps) {
     const { user } = useAuth();
-
-    if (!shouldShowFeature(user, requiredPlan)) {
+    console.log({ user, canView: shouldShowFeature(user, requiredPlan) });
+    if (!hasProAccess(user)) {
         return <Navigate to={fallbackRoute} replace />;
     }
 
