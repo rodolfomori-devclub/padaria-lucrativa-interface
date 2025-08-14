@@ -28,14 +28,12 @@ export function DashboardPage() {
                 <p className="text-gray-600 mt-2">Visão geral do desempenho da padaria</p>
             </div>
 
-            {/* Dashboard Filters */}
             <DashboardFiltersComponent
                 filters={filters}
                 onFiltersChange={handleFiltersChange}
             />
 
-            {/* Error State */}
-            {error && (
+            {!!error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
                     <h3 className="text-red-800 font-medium">Erro ao carregar dados</h3>
                     <p className="text-red-600 text-sm mt-1">
@@ -44,10 +42,8 @@ export function DashboardPage() {
                 </div>
             )}
 
-            {/* Dashboard Content */}
             {dashboardData ? (
                 <>
-                    {/* Sales Indicators */}
                     <div className="space-y-4 mb-5">
                         <SalesIndicators
                             salesData={dashboardData.salesIndicators}
@@ -59,20 +55,17 @@ export function DashboardPage() {
                         />
                     </div>
 
-                    {/* Financial Indicators */}
                     <FinancialIndicators
                         financialData={dashboardData.financialIndicators}
                         isLoading={isLoading}
                     />
 
-                    {/* Net Result */}
                     <NetResultIndicator
                         netResult={dashboardData.netResult}
                         isLoading={isLoading}
                     />
                 </>
             ) : !error && (
-                /* Loading state with skeleton components */
                 <>
                     <SalesIndicators
                         salesData={{
