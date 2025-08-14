@@ -24,7 +24,7 @@ export function DashboardPage() {
     return (
         <div className="p-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-base">Dashboard</h1>
+                <h1 className="text-3xl font-bold text-base">Resultado Previsto</h1>
                 <p className="text-gray-600 mt-2">Visão geral do desempenho da padaria</p>
             </div>
 
