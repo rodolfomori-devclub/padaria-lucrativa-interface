@@ -4,7 +4,8 @@ export const loginSchema = z.object({
     email: z
         .string()
         .min(1, 'E-mail é obrigatório')
-        .email('E-mail inválido'),
+        .email('E-mail inválido')
+        .transform(email => email.toLowerCase()),
     password: z
         .string()
         .min(1, 'Senha é obrigatória')
@@ -19,7 +20,8 @@ export const registerSchema = z.object({
     email: z
         .string()
         .min(1, 'E-mail é obrigatório')
-        .email('E-mail inválido'),
+        .email('E-mail inválido')
+        .transform(email => email.toLowerCase()),
     phone: z
         .string()
         .min(1, 'Telefone é obrigatório')

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 interface UseDebounceProps {
     value: string
-    delay: number
+    delay?: number
 }
 
 export const useDebounce = ({ value, delay = 500 }: UseDebounceProps) => {

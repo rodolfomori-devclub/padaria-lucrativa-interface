@@ -4,11 +4,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "~/contexts/AuthContext";
 import { cn } from "~/lib/utils";
 import {
+  ADMIN_SIDEBAR_NAVIGATION,
+  BASIC_SIDEBAR_NAVIGATION,
+  PRO_SIDEBAR_NAVIGATION,
   ROUTES,
-  SIDEBAR_NAVIGATION,
   USER_MENU_ITEMS,
   type NavItem,
 } from "~/routes/routes";
+import { UserRole } from "~/types/user";
+import { hasProAccess } from "~/utils/plans";
 import {
   SidebarContent,
   SidebarFooter,
@@ -129,10 +133,27 @@ function UserSection() {
 
 export function Sidebar({ className }: SidebarProps) {
   const location = useLocation();
+  const { user } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname.includes(path);
   };
+
+  const getSidebarNavigation = (): NavItem[] => {
+    if (!user) return BASIC_SIDEBAR_NAVIGATION;
+
+    if (user.role === UserRole.ADMIN || user.role === UserRole.EMPLOYEE) {
+      return ADMIN_SIDEBAR_NAVIGATION;
+    }
+
+    if (user.role === UserRole.CLIENT) {
+      return hasProAccess(user) ? PRO_SIDEBAR_NAVIGATION : BASIC_SIDEBAR_NAVIGATION;
+    }
+
+    return BASIC_SIDEBAR_NAVIGATION;
+  };
+
+  const SIDEBAR_ROUTES = getSidebarNavigation();
 
   return (
     <SidebarRoot className={cn(className, "w-60")}>
@@ -142,7 +163,7 @@ export function Sidebar({ className }: SidebarProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          {SIDEBAR_NAVIGATION.map((item) => (
+          {SIDEBAR_ROUTES.map((item) => (
             <NavItemComponent key={item.name} item={item} isActive={isActive} />
           ))}
         </SidebarGroup>

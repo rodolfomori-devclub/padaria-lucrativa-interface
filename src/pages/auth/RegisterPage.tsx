@@ -9,6 +9,7 @@ import { ROUTES } from '~/routes/routes'
 import { registerSchema, type RegisterFormData } from '~/schema/auth'
 import { authService } from '~/services/auth'
 import type { AuthResponse } from '~/types/auth'
+import { formatPhone } from '~/utils/formaters'
 
 export function RegisterPage() {
     const navigate = useNavigate()
@@ -45,14 +46,6 @@ export function RegisterPage() {
     const onSubmit = async (data: RegisterFormData) => {
         setError('')
         await mutateAsync(data)
-    }
-
-    const formatPhone = (value: string) => {
-        const numbers = value.replace(/\D/g, '')
-        if (numbers.length <= 10) {
-            return numbers.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
-        }
-        return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
     }
 
     return (

@@ -5,7 +5,9 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
 import { AppLayout } from "./components/AppLayout";
+import { PlanProtectedRoute } from "./components/PlanProtectedRoute";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import {
   DashboardPage,
@@ -14,6 +16,8 @@ import {
   ReceitasModeloPage,
   RecipeFormPage,
 } from "./pages";
+import { ClientsPage } from "./pages/admin/clientes";
+import { EmployeesPage } from "./pages/admin/funcionarios";
 import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
 import {
   DespesasFixasPage,
@@ -23,8 +27,10 @@ import { MargensLucroPage } from "./pages/cadastros-gerais/MargensLucro";
 import { ControlePerdasPage } from "./pages/controle-perdas";
 import { CargosPage, DespesasPessoalPage } from "./pages/despesas-pessoal";
 import { BoletosPage, FornecedoresPage } from "./pages/fornecedores";
+import { MixDeMargensProjeção, MixPages } from "./pages/mix-de-margens";
 import { ProjecaoVendasPage } from "./pages/projecao-vendas";
 import { ROUTES } from "./routes/routes";
+import { PlanType } from "./types/plan";
 
 function App() {
   return (
@@ -95,11 +101,37 @@ function App() {
               path={ROUTES.PROJECAO_VENDAS}
               element={<ProjecaoVendasPage />}
             />
+            <Route
+              path={ROUTES.MIX_DE_MARGENS}
+              element={
+                <PlanProtectedRoute requiredPlan={PlanType.PRO}>
+                  <MixPages />
+                </PlanProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.MIX_DE_MARGENS_PROJECAO}
+              element={<MixDeMargensProjeção />}
+            />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
           </Route>
+
+          {/* Admin Routes */}
+          <Route
+            path="/"
+            element={
+              <AdminProtectedRoute>
+                <AppLayout>
+                  <Outlet />
+                </AppLayout>
+              </AdminProtectedRoute>
+            }
+          >
+            {/* <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} /> */}
+            <Route path={ROUTES.ADMIN_CLIENTES} element={<ClientsPage />} />
+            <Route path={ROUTES.ADMIN_FUNCIONARIOS} element={<EmployeesPage />} />
+          </Route>
         </Route>
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>
   );
