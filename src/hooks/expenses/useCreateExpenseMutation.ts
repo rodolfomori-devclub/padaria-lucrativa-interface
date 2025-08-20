@@ -29,27 +29,41 @@ export function useCreateExpenseMutation() {
 
             const previousExpenses = queryClient.getQueryData<Expense[]>(queryKey)
 
+            const isGovFreeExisting = previousExpenses?.find(expense => expense.isGovFee)
             // Calculate day for optimistic update
             const currentDate = new Date();
             const month = filters.month || (currentDate.getMonth() + 1);
             const year = filters.year || currentDate.getFullYear();
             const day = new Date(year, month - 1, 2);
 
-            queryClient.setQueryData(queryKey, (old: Expense[]) => [...old, {
-                ...variables,
-                id: tempExpenseId,
-                day,
-                isActive: true,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            }])
+            if (isGovFreeExisting && variables.isGovFee) {
+                queryClient.setQueryData(queryKey, (old: Expense[]) =>
+                    old.map(expense => expense.id === isGovFreeExisting.id ? { ...expense, value: variables.value } : expense)
+                )
+            } else {
+                queryClient.setQueryData(queryKey, (old: Expense[]) => [...old, {
+                    ...variables,
+                    id: tempExpenseId,
+                    day,
+                    isActive: true,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                }])
+            }
 
             return { previousExpenses, tempExpenseId }
         },
         onSuccess: (data, _variables, context) => {
-            queryClient.setQueryData(queryKey, (old: Expense[]) =>
-                old.map(expense => expense.id === context?.tempExpenseId ? data : expense)
-            )
+            const existiingIsGovFee = queryClient.getQueryData<Expense[]>(queryKey)?.find(expense => expense.isGovFee)
+            if (existiingIsGovFee && _variables.isGovFee) {
+                queryClient.setQueryData(queryKey, (old: Expense[]) =>
+                    old.map(expense => expense.id === existiingIsGovFee.id ? { ...expense, value: _variables.value } : expense)
+                )
+            } else {
+                queryClient.setQueryData(queryKey, (old: Expense[]) =>
+                    old.map(expense => expense.id === context?.tempExpenseId ? data : expense)
+                )
+            }
             toast.success('Despesa criada com sucesso')
         },
         onError: (_error, _variables, context) => {
