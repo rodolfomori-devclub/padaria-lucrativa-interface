@@ -1,18 +1,25 @@
-import { z } from 'zod'
-import { UnitMeasure } from '~/types/input'
+import { z } from "zod";
+import { UnitMeasure } from "~/types/input";
 
 const recipeInputSchema = z.object({
-    inputId: z.string().min(1, 'Insumo é obrigatório'),
-    quantity: z.number().min(0.001, 'Quantidade deve ser maior que zero'),
-})
+  inputId: z.string().min(1, "Insumo é obrigatório"),
+  quantity: z.number().min(0.001, "Quantidade deve ser maior que zero"),
+});
 
 export const recipeFormSchema = z.object({
-    name: z.string().min(1, 'Nome é obrigatório'),
-    yield: z.number().min(0.001, 'Rendimento deve ser maior que zero'),
-    unitMeasure: z.nativeEnum(UnitMeasure, { required_error: 'Unidade de medida é obrigatória' }),
-    inputs: z.array(recipeInputSchema).min(1, 'Deve ter pelo menos um ingrediente'),
-    salePrice: z.number().min(0, 'Preço de venda praticado deve ser maior que zero'),
-})
+  name: z.string().min(1, "Nome é obrigatório"),
+  yield: z.number().min(0.001, "Rendimento deve ser maior que zero"),
+  unitMeasure: z.nativeEnum(UnitMeasure, {
+    required_error: "Unidade de medida é obrigatória",
+  }),
+  inputs: z
+    .array(recipeInputSchema)
+    .min(1, "Deve ter pelo menos um ingrediente"),
+  salePrice: z
+    .number()
+    .min(0, "Preço de venda praticado deve ser maior que zero"),
+  familyId: z.string().optional(),
+});
 
-export type RecipeFormData = z.infer<typeof recipeFormSchema>
-export type RecipeInputFormData = z.infer<typeof recipeInputSchema>
+export type RecipeFormData = z.infer<typeof recipeFormSchema>;
+export type RecipeInputFormData = z.infer<typeof recipeInputSchema>;

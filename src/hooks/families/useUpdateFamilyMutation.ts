@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { queryClient } from "~/lib/queryClient";
 import { familyService } from "~/services/families";
 import type { Family, UpdateFamilyData } from "~/types/family";
+import { RECIPES_QUERY_KEY } from "../recipes/useRecipes";
 import { FAMILIES_QUERY_KEY } from "./useFamilies";
 
 interface UpdateFamilyVariables {
@@ -47,7 +48,9 @@ export function useUpdateFamilyMutation() {
       }
 
       // Also update individual family query if it exists
-      queryClient.setQueryData(["family", variables.id], data);
+      queryClient.setQueryData([FAMILIES_QUERY_KEY, variables.id], data);
+
+      queryClient.invalidateQueries({ queryKey: RECIPES_QUERY_KEY });
 
       toast.success("Família atualizada com sucesso");
     },
