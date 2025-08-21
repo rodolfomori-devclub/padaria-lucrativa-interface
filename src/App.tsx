@@ -27,7 +27,7 @@ import { MargensLucroPage } from "./pages/cadastros-gerais/MargensLucro";
 import { ControlePerdasPage } from "./pages/controle-perdas";
 import { CargosPage, DespesasPessoalPage } from "./pages/despesas-pessoal";
 import { BoletosPage, FornecedoresPage } from "./pages/fornecedores";
-import { MixDeMargensProjeção, MixPages } from "./pages/mix-de-margens";
+import { MixDeMargensProjeção, MixFamilyPages } from "./pages/mix-de-margens";
 import { ProjecaoVendasPage } from "./pages/projecao-vendas";
 import { ROUTES } from "./routes/routes";
 import { PlanType } from "./types/plan";
@@ -105,7 +105,7 @@ function App() {
               path={ROUTES.MIX_DE_MARGENS}
               element={
                 <PlanProtectedRoute requiredPlan={PlanType.PRO}>
-                  <MixPages />
+                  <MixFamilyPages />
                 </PlanProtectedRoute>
               }
             />
@@ -129,7 +129,10 @@ function App() {
           >
             {/* <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} /> */}
             <Route path={ROUTES.ADMIN_CLIENTES} element={<ClientsPage />} />
-            <Route path={ROUTES.ADMIN_FUNCIONARIOS} element={<EmployeesPage />} />
+            <Route
+              path={ROUTES.ADMIN_FUNCIONARIOS}
+              element={<EmployeesPage />}
+            />
           </Route>
         </Route>
       </Routes>

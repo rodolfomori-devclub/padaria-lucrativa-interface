@@ -1,2 +1,2 @@
-export { MixPages } from './MixPages'
-export { MixDeMargensProjeção } from './projecao'
+export { MixFamilyPages } from "./MixFamilyPages";
+export { MixDeMargensProjeção } from "./projecao";

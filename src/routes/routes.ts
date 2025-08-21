@@ -55,7 +55,7 @@ export const ROUTES = {
   PROJECAO_VENDAS: "/projecao-vendas",
 
   // Mix de Margens
-  MIX_DE_MARGENS: "/mix-de-margens",
+  MIX_DE_MARGENS: "/mix-familias",
   MIX_DE_MARGENS_PROJECAO: "/mix-projecao",
 
   // Admin routes
