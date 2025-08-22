@@ -1,26 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import { dashboardService, type DashboardFilters } from "~/services/dashboard";
-import type { DashboardData } from "~/utils/dashboardCalculators";
+import { mixMargensService } from "~/services/mix-margens";
+import type { MixMargensData, MixMargensFilters } from "~/types/mix-margens";
 
-export const DASHBOARD_QUERY_KEY = ["dashboard"];
+export const MIX_MARGENS_QUERY_KEY = ["mix-margens"];
 
-export const useDashboardData = (filters?: DashboardFilters) => {
+export const useMixMargensData = (filters?: MixMargensFilters) => {
   const queryKey = filters
-    ? [DASHBOARD_QUERY_KEY[0], filters]
-    : DASHBOARD_QUERY_KEY;
+    ? [MIX_MARGENS_QUERY_KEY[0], filters]
+    : MIX_MARGENS_QUERY_KEY;
 
   const {
-    data: dashboardData,
+    data: mixMargensData,
     isLoading,
     error,
     refetch,
+    dataUpdatedAt,
   } = useQuery({
+    staleTime: 0,
     queryKey,
-    queryFn: async (): Promise<DashboardData> => {
-      const response = await dashboardService.getData(filters);
+    queryFn: async (): Promise<MixMargensData> => {
+      const response = await mixMargensService.getData(filters);
       return response;
     },
-    staleTime: 0,
     retry: (failureCount, error: unknown) => {
       // Don't retry on authentication errors
       if (error && typeof error === "object" && "response" in error) {
@@ -32,9 +33,10 @@ export const useDashboardData = (filters?: DashboardFilters) => {
   });
 
   return {
-    dashboardData,
+    mixMargensData,
     isLoading,
     error,
     refetch,
+    dataUpdatedAt,
   };
 };

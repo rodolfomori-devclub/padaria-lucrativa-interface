@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { Label, Switch } from "~/components/ui";
 import { Button } from "~/components/ui/button";
 import { DialogFooter } from "~/components/ui/dialog";
 import { Input as UIInput } from "~/components/ui/input";
@@ -29,19 +30,27 @@ export function ExpenseDialogContent({
   const {
     register,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
       name: expense?.name ?? "",
-      value: expense?.value ?? 0,
+      value: expense?.value ?? undefined,
+      isGovFee: expense?.isGovFee ?? false,
     },
   });
 
   const handleFormSubmit = async (data: ExpenseFormData) => {
     const day = new Date(filters.month ?? 0, filters.year ?? 0).toISOString();
-    await onSubmit({ ...data, isFixed, day });
+    const isGovFee = data.isGovFee;
+    await onSubmit({
+      ...data,
+      name: isGovFee ? "Simples Nacional" : data.name,
+      isFixed,
+      ...(!expense && { day }),
+      isGovFee,
+    });
   };
 
   const typeText = isFixed ? "fixa" : "variável";
@@ -50,9 +59,9 @@ export function ExpenseDialogContent({
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       <div>
         <UIInput
+          label="Nome da Despesa *"
           id="name"
           type="text"
-          label="Nome da Despesa *"
           {...register("name")}
           className={errors.name ? "border-red-500" : ""}
           placeholder={`Digite o nome da despesa ${typeText}`}
@@ -64,32 +73,47 @@ export function ExpenseDialogContent({
 
       <Controller
         control={control}
-        name="value"
+        name="isGovFee"
         render={({ field }) => {
-          const { onChange, value } = field;
-          const formatedValue = formatCurrency(value);
+          const { onChange, value, ...rest } = field;
           return (
-            <div>
-              <UIInput
-                id="value"
-                label="Valor (R$) *"
-                {...field}
-                value={formatedValue}
-                onChange={(e) =>
-                  onChange(Number(removeNonNumeric(e.target.value)))
-                }
-                className={errors.value ? "border-red-500" : ""}
-                placeholder="0,00"
+            <div className="flex items-center gap-2 my-6">
+              <Switch
+                id="isGovFee"
+                {...rest}
+                checked={value}
+                onCheckedChange={onChange}
               />
-              {errors.value && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.value.message}
-                </p>
-              )}
+              <Label htmlFor="isGovFee">Simples Nacional</Label>
             </div>
           );
         }}
       />
+
+      <Controller
+        control={control}
+        name="value"
+        render={({ field }) => {
+          const { onChange, value, ...rest } = field;
+          const formattedValue = formatCurrency(value);
+          return (
+            <UIInput
+              label="Valor (R$) *"
+              id="value"
+              placeholder="0,00"
+              className={errors.value ? "border-red-500" : ""}
+              {...rest}
+              value={formattedValue}
+              onChange={(e) =>
+                onChange(Number(removeNonNumeric(e.target.value)))
+              }
+            />
+          );
+        }}
+      />
+      {errors.value && (
+        <p className="mt-1 text-sm text-red-600">{errors.value.message}</p>
+      )}
 
       <DialogFooter>
         <Button

@@ -54,7 +54,7 @@ export function ExpensesTable({ expenses, isLoading, isFixed }: ExpensesTablePro
                             <TableCell>{formatCurrency(expense.value)}</TableCell>
                             <TableCell>{formatMonthYear(expense.createdAt)}</TableCell>
                             <TableCell className="text-right">
-                                <div className="flex justify-end gap-2">
+                                <div className="flex justify-center gap-2">
                                     <EditExpenseDialog expense={expense} />
                                     <DeleteExpenseDialog expense={expense} />
                                 </div>
