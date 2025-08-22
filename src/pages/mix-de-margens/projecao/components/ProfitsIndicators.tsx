@@ -29,7 +29,7 @@ export function ProfitsIndicators({
           value={formatCurrency(profitsData.forecastSales)}
           subtitle={`${formatPercentage(
             profitsData.forecastSales
-          )}% da previsão de vendas`}
+          )}% Previsão de vendas`}
           icon={DollarSign}
           isLoading={isLoading}
           isMixMargens
@@ -41,7 +41,7 @@ export function ProfitsIndicators({
             profitsData.forecastSales > 0
               ? profitsData.profitForecast.percentage
               : 0
-          )}% da previsão de vendas`}
+          )}% Previsão de vendas`}
           icon={TrendingUp}
           isLoading={isLoading}
           isMixMargens
@@ -53,7 +53,7 @@ export function ProfitsIndicators({
             profitsData.forecastSales > 0
               ? profitsData.realNetProfit.percentage
               : 0
-          )}% da previsão de vendas`}
+          )}% Previsão de vendas`}
           color={realNetProfitColor}
           icon={Target}
           isLoading={isLoading}
@@ -62,8 +62,7 @@ export function ProfitsIndicators({
         <IndicatorCard
           title="Previsão de Lucro Líquido"
           value={formatCurrency(profitsData.forecastNetProfit.value)}
-          subtitle={`${profitsData.forecastNetProfit.percentage}% da previsão de vendas`}
-          color="text-purple-600"
+          subtitle={`${profitsData.forecastNetProfit.percentage}% Previsão de vendas`}
           icon={Calculator}
           isLoading={isLoading}
           isMixMargens
