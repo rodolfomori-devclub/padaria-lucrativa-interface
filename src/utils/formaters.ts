@@ -99,13 +99,12 @@ export const formatPercentage = (value?: number) => {
   if (value === undefined || value === null) return "";
   if (value === 0) return "0,00";
   return new Intl.NumberFormat("pt-BR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(Number(value));
 };
 
 export const getCoefficient = (participation: number) => {
-  console.log({ participation });
   if (
     participation === undefined ||
     participation === null ||
