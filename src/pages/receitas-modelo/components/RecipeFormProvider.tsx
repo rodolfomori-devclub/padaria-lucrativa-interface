@@ -27,7 +27,7 @@ export const RecipeFormProvider = ({
       unitMeasure: defaultValues?.unitMeasure ?? UnitMeasure.UNIDADE,
       inputs: defaultValues?.inputs ?? [],
       salePrice: defaultValues?.salePrice ?? 0,
-      familyId: defaultValues?.familyId ?? "",
+      familyId: defaultValues?.familyId ?? undefined,
     },
   });
 
