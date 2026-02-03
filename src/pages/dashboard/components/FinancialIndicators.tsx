@@ -45,7 +45,7 @@ export function FinancialIndicators({
   ];
 
   return (
-    <div className="mb-8">
+    <div>
       <h2 className="text-xl font-semibold text-gray-900 mb-4">
         Indicadores Financeiros
       </h2>

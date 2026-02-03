@@ -1,3 +1,5 @@
+import type { CMVIndicator } from "~/types/dashboard";
+
 export interface FinancialIndicator {
   value: number;
   percentage: number;
@@ -24,6 +26,7 @@ export interface FinancialIndicators {
   monthlyPurchases: FinancialIndicator;
   cardCosts: FinancialIndicator;
   total: FinancialIndicator;
+  cmv: CMVIndicator;
 }
 
 export interface NetResult {
