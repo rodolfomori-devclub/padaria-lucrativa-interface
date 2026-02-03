@@ -2,6 +2,17 @@ import type { BaseDateFilters } from "./filters";
 
 export type DashboardFilters = BaseDateFilters;
 
+export interface CMVIndicator {
+  realValue: number;
+  forecastValue: number;
+  percentage: number;
+}
+
+export interface CMVIndicatorCardProps {
+  cmvData: CMVIndicator;
+  isLoading?: boolean;
+}
+
 export interface FinancialIndicator {
   value: number;
   percentage: number;
