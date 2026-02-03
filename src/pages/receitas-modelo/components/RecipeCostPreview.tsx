@@ -1,19 +1,26 @@
 import { useFormContext } from "react-hook-form";
 import { useAuth } from "~/contexts/AuthContext";
+import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
 import { useFamilies } from "~/hooks/families/useFamilies";
 import { useInputs } from "~/hooks/inputs/useInputs";
 import type { RecipeFormData } from "~/schema/receitas-modelo";
 import { calculateUnitCost } from "~/utils/calculators";
 import { formatCurrency } from "~/utils/formaters";
 
+const DEFAULT_COEFFICIENT = 4;
+
 export const RecipeCostPreview = () => {
   const { isProUser } = useAuth();
   const { inputs } = useInputs();
   const { families } = useFamilies();
+  const { coefficient, isLoading: isCoefficientLoading } = useCoefficient();
   const { watch } = useFormContext<RecipeFormData>();
 
   const watchedValues = watch();
   const family = families.find((f) => f.id === watchedValues.familyId);
+
+  // Use calculated coefficient or fallback to default
+  const calculatedCoefficient = coefficient ?? DEFAULT_COEFFICIENT;
 
   // Calculate totals for preview
   const calculateTotals = () => {
@@ -81,11 +88,14 @@ export const RecipeCostPreview = () => {
                 Preço Sugerido de Venda:
               </span>
               <span className="font-semibold text-2xl text-green-600">
-                {formatCurrency(unitCost * 4)}
+                {isCoefficientLoading
+                  ? "Calculando..."
+                  : formatCurrency(unitCost * calculatedCoefficient)}
               </span>
             </div>
             <p className="text-sm text-gray-500">
-              * Preço sugerido = Custo unitário × 4
+              * Preço sugerido = Custo unitário ×{" "}
+              {calculatedCoefficient.toFixed(2)}
             </p>
           </div>
         )}
