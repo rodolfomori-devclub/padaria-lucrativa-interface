@@ -94,8 +94,8 @@ export const RecipeCostPreview = () => {
               </span>
             </div>
             <p className="text-sm text-gray-500">
-              * Preço sugerido = Custo unitário ×{" "}
-              {calculatedCoefficient.toFixed(2)}
+              * Custo unitário × {calculatedCoefficient.toFixed(2)} (Coeficiente
+              de Produção Própria)
             </p>
           </div>
         )}
