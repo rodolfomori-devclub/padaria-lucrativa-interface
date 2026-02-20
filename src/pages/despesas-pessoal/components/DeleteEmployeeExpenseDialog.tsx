@@ -20,6 +20,7 @@ interface DeleteEmployeeExpenseDialogProps {
 export function DeleteEmployeeExpenseDialog({ employeeExpense }: DeleteEmployeeExpenseDialogProps) {
     const [isOpen, setIsOpen] = useState(false)
     const { deleteEmployeeExpense, isPending: isDeleting } = useDeleteEmployeeExpenseMutation()
+    const isRecurring = !!employeeExpense.recurringTemplateId
 
     const handleDelete = async () => {
         await deleteEmployeeExpense(employeeExpense.id)
@@ -37,8 +38,22 @@ export function DeleteEmployeeExpenseDialog({ employeeExpense }: DeleteEmployeeE
                 <DialogHeader>
                     <DialogTitle>Excluir Despesa com Pessoal</DialogTitle>
                     <DialogDescription>
-                        Tem certeza que deseja excluir a despesa do funcionário "{employeeExpense.name}"?
-                        Esta ação não pode ser desfeita.
+                        {isRecurring ? (
+                            <div className="space-y-2">
+                                <p className="font-semibold text-amber-600">
+                                    ⚠️ Este é um funcionário recorrente!
+                                </p>
+                                <p>
+                                    Ao remover este funcionário, <strong>todas as folhas de pagamento futuras
+                                    serão excluídas</strong> e o cadastro recorrente será desativado.
+                                </p>
+                                <p className="mt-2">
+                                    Deseja realmente remover "{employeeExpense.name}" e todas as suas ocorrências futuras?
+                                </p>
+                            </div>
+                        ) : (
+                            `Tem certeza que deseja excluir a despesa do funcionário "${employeeExpense.name}"? Esta ação não pode ser desfeita.`
+                        )}
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

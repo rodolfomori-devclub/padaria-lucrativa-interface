@@ -1,6 +1,8 @@
 import type { BaseDateFilters } from './filters'
 import type { Supplier } from './supplier'
 
+export type RecurrencePattern = 'MONTHLY' | 'QUARTERLY' | 'SEMIANNUAL' | 'ANNUAL'
+
 export interface Boleto {
     id: string
     supplierId: string
@@ -11,6 +13,7 @@ export interface Boleto {
     paid: boolean
     paymentDate?: string
     isActive: boolean
+    recurringTemplateId?: string
     createdAt: Date
     updatedAt: Date
 }
@@ -20,6 +23,10 @@ export interface CreateBoletoData {
     value: number
     dueDate: string
     observations?: string
+    isRecurring?: boolean
+    recurrencePattern?: RecurrencePattern
+    recurringStartDate?: string
+    recurringDayOfMonth?: number
 }
 
 export interface UpdateBoletoData {
