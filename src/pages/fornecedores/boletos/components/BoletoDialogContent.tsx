@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Input, Label, Loading } from '~/components/ui'
+import { Button, Input, Label, Loading, Switch } from '~/components/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
 import { useSuppliers } from '~/hooks/suppliers/useSuppliers'
@@ -27,6 +27,7 @@ export function BoletoDialogContent({
         register,
         handleSubmit,
         control,
+        watch,
         formState: { errors },
     } = useForm<BoletoFormData>({
         resolver: zodResolver(boletoSchema),
@@ -37,8 +38,16 @@ export function BoletoDialogContent({
                 dueDate: formatDateForInput(boleto.dueDate),
                 observations: boleto.observations || '',
             }
-            : undefined,
+            : {
+                isRecurring: false,
+                recurrencePattern: undefined,
+                recurringStartDate: undefined,
+                recurringDayOfMonth: undefined,
+            },
     })
+
+    const isRecurring = watch('isRecurring')
+    const isEditing = !!boleto
 
     const handleFormSubmit = async (data: BoletoFormData) => {
         await onSubmit(data)
@@ -131,6 +140,91 @@ export function BoletoDialogContent({
                     <p className="mt-1 text-sm text-red-600">{errors.observations.message}</p>
                 )}
             </div>
+
+            {!isEditing && (
+                <>
+                    <Controller
+                        control={control}
+                        name="isRecurring"
+                        render={({ field }) => {
+                            const { onChange, value, ...rest } = field;
+                            return (
+                                <div className="flex items-center gap-2 my-4">
+                                    <Switch
+                                        id="isRecurring"
+                                        {...rest}
+                                        checked={value}
+                                        onCheckedChange={onChange}
+                                    />
+                                    <Label htmlFor="isRecurring">Tornar recorrente</Label>
+                                </div>
+                            );
+                        }}
+                    />
+
+                    {isRecurring && (
+                        <div className="space-y-4 border-t pt-4">
+                            <h4 className="text-sm font-medium text-gray-700">Configuração de Recorrência</h4>
+                            
+                            <Controller
+                                control={control}
+                                name="recurrencePattern"
+                                render={({ field }) => (
+                                    <div className="space-y-2">
+                                        <Label htmlFor="recurrencePattern">Frequência *</Label>
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <SelectTrigger className={errors.recurrencePattern ? "border-red-500" : ""}>
+                                                <SelectValue placeholder="Selecione a frequência" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="MONTHLY">Mensal</SelectItem>
+                                                <SelectItem value="QUARTERLY">Trimestral (a cada 3 meses)</SelectItem>
+                                                <SelectItem value="SEMIANNUAL">Semestral (a cada 6 meses)</SelectItem>
+                                                <SelectItem value="ANNUAL">Anual</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        {errors.recurrencePattern && (
+                                            <p className="mt-1 text-sm text-red-600">{errors.recurrencePattern.message}</p>
+                                        )}
+                                    </div>
+                                )}
+                            />
+
+                            <div className="space-y-2">
+                                <Input
+                                    label="Data de Início *"
+                                    id="recurringStartDate"
+                                    type="date"
+                                    {...register("recurringStartDate")}
+                                    className={errors.recurringStartDate ? "border-red-500" : ""}
+                                />
+                                {errors.recurringStartDate && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.recurringStartDate.message}</p>
+                                )}
+                            </div>
+
+                            <div className="space-y-2">
+                                <Input
+                                    label="Dia do Mês para Vencimento (1-31) *"
+                                    id="recurringDayOfMonth"
+                                    type="number"
+                                    min="1"
+                                    max="31"
+                                    {...register("recurringDayOfMonth", { valueAsNumber: true })}
+                                    className={errors.recurringDayOfMonth ? "border-red-500" : ""}
+                                    placeholder="Ex: 10"
+                                />
+                                {errors.recurringDayOfMonth && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.recurringDayOfMonth.message}</p>
+                                )}
+                                <p className="text-xs text-gray-500">
+                                    Dia do mês em que o boleto será gerado automaticamente
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </>
+            )}
 
             <div className="flex justify-end gap-2 pt-4">
                 <Button variant="outline" type="button" onClick={onCancel}>

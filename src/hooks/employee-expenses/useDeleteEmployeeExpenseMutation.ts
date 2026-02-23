@@ -21,8 +21,12 @@ export function useDeleteEmployeeExpenseMutation() {
 
             return { previousEmployeeExpenses };
         },
-        onSuccess: () => {
-            toast.success('Despesa com pessoal excluída com sucesso');
+        onSuccess: (data) => {
+            if (data?.deletedCount > 1) {
+                toast.success(`Funcionário removido - ${data.deletedCount} ocorrências futuras foram excluídas`);
+            } else {
+                toast.success('Despesa com pessoal excluída com sucesso');
+            }
         },
         onError: (_error, _variables, context) => {
             if (context?.previousEmployeeExpenses) {

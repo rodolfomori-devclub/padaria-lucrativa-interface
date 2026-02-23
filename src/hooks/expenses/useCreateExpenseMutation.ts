@@ -60,9 +60,24 @@ export function useCreateExpenseMutation() {
                     old.map(expense => expense.id === existiingIsGovFee.id ? { ...expense, value: _variables.value } : expense)
                 )
             } else {
-                queryClient.setQueryData(queryKey, (old: Expense[]) =>
-                    old.map(expense => expense.id === context?.tempExpenseId ? data : expense)
-                )
+                // Check if returned expense's date matches current filter
+                const expenseMonth = new Date(data.day).getMonth() + 1;
+                const expenseYear = new Date(data.day).getFullYear();
+                const filterMonth = filters.month || (new Date().getMonth() + 1);
+                const filterYear = filters.year || new Date().getFullYear();
+                
+                // Only update cache if dates match, otherwise invalidate
+                if (expenseMonth === filterMonth && expenseYear === filterYear) {
+                    queryClient.setQueryData(queryKey, (old: Expense[]) =>
+                        old.map(expense => expense.id === context?.tempExpenseId ? data : expense)
+                    )
+                } else {
+                    // Date doesn't match filter, remove temp and refetch
+                    queryClient.setQueryData(queryKey, (old: Expense[]) =>
+                        old.filter(expense => expense.id !== context?.tempExpenseId)
+                    )
+                    queryClient.invalidateQueries({ queryKey: EXPENSES_QUERY_KEY })
+                }
             }
             toast.success('Despesa criada com sucesso')
         },
