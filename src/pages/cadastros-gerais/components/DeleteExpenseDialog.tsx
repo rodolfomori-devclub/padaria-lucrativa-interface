@@ -20,6 +20,7 @@ interface DeleteExpenseDialogProps {
 export function DeleteExpenseDialog({ expense }: DeleteExpenseDialogProps) {
     const [isOpen, setIsOpen] = useState(false)
     const { deleteExpense, isPending: isDeleting } = useDeleteExpenseMutation()
+    const isRecurring = !!expense.recurringTemplateId
 
     const handleDelete = async () => {
         await deleteExpense(expense.id)
@@ -38,12 +39,29 @@ export function DeleteExpenseDialog({ expense }: DeleteExpenseDialogProps) {
                     Remover
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[400px]">
+            <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>Remover Despesa</DialogTitle>
-                    <DialogDescription>
-                        Tem certeza que deseja remover a despesa "{expense.name}"?
-                        Esta ação não pode ser desfeita.
+                    <DialogDescription asChild>
+                        <div className="space-y-3">
+                            {isRecurring ? (
+                                <>
+                                    <p className="font-semibold text-amber-600">
+                                        ⚠️ Esta é uma despesa recorrente!
+                                    </p>
+                                    <p>
+                                        Ao remover esta despesa, <strong>todas as ocorrências futuras desta recorrência serão excluídas</strong> e o template recorrente será desativado.
+                                    </p>
+                                    <p>
+                                        Deseja realmente remover a despesa "{expense.name}" e todas as suas ocorrências futuras?
+                                    </p>
+                                </>
+                            ) : (
+                                <p>
+                                    Tem certeza que deseja remover a despesa "{expense.name}"? Esta ação não pode ser desfeita.
+                                </p>
+                            )}
+                        </div>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

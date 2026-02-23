@@ -13,6 +13,7 @@ export interface EmployeeExpense {
     meal?: number
     netSalary: number
     isActive: boolean
+    recurringTemplateId?: string
     createdAt: Date
     updatedAt: Date
 }
@@ -29,6 +30,9 @@ export interface CreateEmployeeExpenseData {
     transport?: number
     meal?: number
     netSalary: number
+    isRecurring?: boolean
+    recurringStartDate?: string
+    recurringDayOfMonth?: number
 }
 
 export interface UpdateEmployeeExpenseData {

@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Switch } from "~/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -38,6 +40,7 @@ export function EmployeeExpenseDialogContent({
   initialData,
 }: EmployeeExpenseDialogContentProps) {
   const { jobs } = useJobs();
+  const [isRecurring, setIsRecurring] = useState(!!initialData?.recurringTemplateId);
 
   const {
     register,
@@ -54,6 +57,7 @@ export function EmployeeExpenseDialogContent({
       extraHours: initialData?.extraHours || undefined,
       transport: initialData?.transport || undefined,
       meal: initialData?.meal || undefined,
+      isRecurring: !!initialData?.recurringTemplateId,
     },
   });
 
@@ -208,6 +212,58 @@ export function EmployeeExpenseDialogContent({
             </p>
           )}
         </div>
+      </div>
+
+      <div className="border-t pt-4 mt-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Switch
+            id="isRecurring"
+            checked={isRecurring}
+            onCheckedChange={(checked) => {
+              setIsRecurring(checked);
+              setValue("isRecurring", checked);
+            }}
+            disabled={!!initialData}
+          />
+          <Label htmlFor="isRecurring">Funcionário Recorrente (Salário Mensal)</Label>
+        </div>
+
+        {isRecurring && (
+          <div className="grid grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg">
+            <div>
+              <Input
+                id="recurringStartDate"
+                label="Data de Início"
+                type="date"
+                {...register("recurringStartDate")}
+              />
+              {errors.recurringStartDate && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.recurringStartDate.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Input
+                id="recurringDayOfMonth"
+                label="Dia do Pagamento"
+                type="number"
+                min="1"
+                max="31"
+                placeholder="Ex: 5 (dia 5 de cada mês)"
+                {...register("recurringDayOfMonth", { valueAsNumber: true })}
+              />
+              {errors.recurringDayOfMonth && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.recurringDayOfMonth.message}
+                </p>
+              )}
+            </div>
+            <div className="col-span-2 text-sm text-blue-600">
+              Este funcionário será gerado automaticamente todo mês a partir da data de início.
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end gap-2 pt-4">
