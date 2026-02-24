@@ -43,3 +43,14 @@ export interface AddRecipeInputData {
   insumoId: string;
   quantidade: number;
 }
+
+export interface RecipePdfData {
+  name: string;
+  yield: number;
+  unitMeasure: UnitMeasure;
+  inputs: Array<{
+    name: string;
+    quantity: number;
+    unitMeasure: UnitMeasure;
+  }>;
+}
