@@ -1,4 +1,6 @@
-import { Edit } from "lucide-react";
+import { Edit, Printer } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { TableEmptyState } from "~/components/Table/EmptyState";
 import { Button } from "~/components/ui/button";
@@ -15,6 +17,7 @@ import { UNIT_MEASURE_LABELS } from "~/types/input";
 import type { Recipe } from "~/types/recipe";
 import { calculateUnitCost } from "~/utils/calculators";
 import { formatCurrency } from "~/utils/formaters";
+import { generateRecipePDF } from "~/utils/generateRecipePDF";
 import { DeleteRecipeDialog } from "./DeleteRecipeDialog";
 
 interface RecipesTableProps {
@@ -23,6 +26,21 @@ interface RecipesTableProps {
 }
 
 export const RecipesTable = ({ recipes, coefficient }: RecipesTableProps) => {
+  const [printingRecipeId, setPrintingRecipeId] = useState<string | null>(null);
+
+  const handlePrint = async (recipeId: string) => {
+    setPrintingRecipeId(recipeId);
+    try {
+      await generateRecipePDF(recipeId);
+      toast.success("PDF gerado com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao gerar PDF da receita");
+      console.error(error);
+    } finally {
+      setPrintingRecipeId(null);
+    }
+  };
+
   if (recipes.length === 0) {
     return (
       <TableEmptyState
@@ -64,6 +82,16 @@ export const RecipesTable = ({ recipes, coefficient }: RecipesTableProps) => {
                 <TableCell>{formatCurrency(recipe.salePrice)}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handlePrint(recipe.id)}
+                      disabled={printingRecipeId === recipe.id}
+                      className="flex items-center gap-1"
+                    >
+                      <Printer className="h-3 w-3" />
+                      {printingRecipeId === recipe.id ? "Gerando..." : "Imprimir"}
+                    </Button>
                     <Link to={`${ROUTES.RECEITAS_MODELO_EDITAR}/${recipe.id}`}>
                       <Button
                         variant="ghost"
