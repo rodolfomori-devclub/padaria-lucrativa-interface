@@ -19,7 +19,8 @@ export const useCoefficient = () => {
       return response;
     },
     // Coefficient is based on last month's data, so it's relatively stable
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: 0, // 1 hour
+    refetchOnWindowFocus: true,
     retry: (failureCount, error: unknown) => {
       // Don't retry on authentication errors
       if (error && typeof error === "object" && "response" in error) {
