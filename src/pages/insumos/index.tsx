@@ -1,6 +1,9 @@
+import { TutorialButton } from "~/components/TutorialButton";
+import { INSUMOS_VIDEOS } from "~/constants/tutorialVideos";
 import { useInputs } from "~/hooks/inputs/useInputs";
 import { InputsTable, NewInputDialog } from "./components";
-import { TutorialButton } from "~/components/TutorialButton";
+
+const [tutorial] = INSUMOS_VIDEOS;
 
 export function InputsPage() {
   const { inputs, isLoading } = useInputs();
@@ -15,9 +18,9 @@ export function InputsPage() {
           </div>
           <div className="flex items-center gap-2">
             <TutorialButton
-              videoUrl="https://drive.google.com/file/d/1JGHyq4xLjvcU-0xypsn5js3SbEeF4GxM/view?usp=sharing"
-              title="Tutorial - Insumos"
-              description="Aprenda a gerenciar os insumos da sua padaria."
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
             />
             <NewInputDialog />
           </div>

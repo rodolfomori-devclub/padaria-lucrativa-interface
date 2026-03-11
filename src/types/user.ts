@@ -13,5 +13,6 @@ export type User = {
     role: UserRole
     phone: string
     createdAt: string
+    isFirstLogin?: boolean
     plan?: Plan
 }

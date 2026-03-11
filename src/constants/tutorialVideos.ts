@@ -61,3 +61,80 @@ export const MARGENS_LUCRO_VIDEOS: TutorialVideo[] = [
       "https://drive.google.com/file/d/1X77XVCHa6s7agqe24wF-iCySGeZg9lPy/view?usp=sharing",
   },
 ];
+
+export const PROJECAO_VENDAS_VIDEOS: TutorialVideo[] = [
+  {
+    id: "projecao-vendas",
+    title: "Tutorial - Projeção de Vendas",
+    description: "Aprenda a gerenciar as projeções de vendas da sua padaria.",
+    videoUrl:
+      "https://drive.google.com/file/d/15YS_cF8ciC3EE75qaSLGNkYxqfpVMoGx/view?usp=sharing",
+  },
+];
+
+export const CONTROLE_PERDAS_VIDEOS: TutorialVideo[] = [
+  {
+    id: "controle-perdas",
+    title: "Tutorial - Controle de Perdas",
+    description: "Aprenda a gerenciar as perdas da sua padaria.",
+    videoUrl:
+      "https://drive.google.com/file/d/1apy-0bd2DFl3tTeeVnRywNhE4ntSn8Pp/view?usp=sharing",
+  },
+];
+
+export const RECEITAS_MODELO_VIDEOS: TutorialVideo[] = [
+  {
+    id: "receitas-modelo",
+    title: "Tutorial - Receitas Modelo",
+    description: "Aprenda a gerenciar as receitas modelo da sua padaria.",
+    videoUrl:
+      "https://drive.google.com/file/d/11WcW2t0X61eDbIBayGH0w5FO-n6HAu59/view?usp=sharing",
+  },
+];
+
+export const INSUMOS_VIDEOS: TutorialVideo[] = [
+  {
+    id: "insumos",
+    title: "Tutorial - Insumos",
+    description: "Aprenda a gerenciar os insumos da sua padaria.",
+    videoUrl:
+      "https://drive.google.com/file/d/1JGHyq4xLjvcU-0xypsn5js3SbEeF4GxM/view?usp=sharing",
+  },
+];
+
+const DESPESAS_VIDEO_URL =
+  "https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing";
+
+export const DESPESAS_VIDEOS: TutorialVideo[] = [
+  {
+    id: "despesas-fixas",
+    title: "Tutorial - Despesas Fixas",
+    description: "Aprenda a gerenciar as despesas fixas da sua padaria.",
+    videoUrl: DESPESAS_VIDEO_URL,
+  },
+  {
+    id: "despesas-variaveis",
+    title: "Tutorial - Despesas Variáveis",
+    description: "Aprenda a gerenciar as despesas variáveis da sua padaria.",
+    videoUrl: DESPESAS_VIDEO_URL,
+  },
+];
+
+export const INTRODUCTION_VIDEO: TutorialVideo = {
+  id: "introduction",
+  title: "Seja Bem-vindo!",
+  description: "Aprenda a usar o sistema Padaria Lucrativa.",
+  videoUrl:
+    "https://drive.google.com/file/d/1l3WIH-XTJqsgOQMr5kwb95ipuNV6vE57/view?usp=sharing",
+};
+
+/** All tutorial videos in the system (aggregates all sections) */
+export const ALL_TUTORIAL_VIDEOS: TutorialVideo[] = [
+  INTRODUCTION_VIDEO,
+  ...MARGENS_LUCRO_VIDEOS,
+  ...PROJECAO_VENDAS_VIDEOS,
+  ...CONTROLE_PERDAS_VIDEOS,
+  ...RECEITAS_MODELO_VIDEOS,
+  ...INSUMOS_VIDEOS,
+  ...DESPESAS_VIDEOS,
+];

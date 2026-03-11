@@ -29,6 +29,7 @@ import { CargosPage, DespesasPessoalPage } from "./pages/despesas-pessoal";
 import { BoletosPage, FornecedoresPage } from "./pages/fornecedores";
 import { MixDeMargensProjeção, MixFamilyPages } from "./pages/mix-de-margens";
 import { ProjecaoVendasPage } from "./pages/projecao-vendas";
+import { TutoriaisPage } from "./pages/tutoriais";
 import { ROUTES } from "./routes/routes";
 import { PlanType } from "./types/plan";
 
@@ -118,6 +119,7 @@ function App() {
               element={<MixDeMargensProjeção />}
             />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+            <Route path={ROUTES.TUTORIAIS} element={<TutoriaisPage />} />
           </Route>
 
           {/* Admin Routes */}

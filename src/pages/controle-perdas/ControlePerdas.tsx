@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
+import { TutorialButton } from "~/components/TutorialButton";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
+import { CONTROLE_PERDAS_VIDEOS } from "~/constants/tutorialVideos";
 import {
   LossControlFiltersProvider,
   useLossControlFilters,
@@ -8,7 +10,8 @@ import {
 import { useLossControls } from "~/hooks/loss-control/useLossControls";
 import type { LossControl } from "~/types/loss-control";
 import { Filters, LossControlTable, NewLossControlDialog } from "./components";
-import { TutorialButton } from "~/components/TutorialButton";
+
+const [tutorial] = CONTROLE_PERDAS_VIDEOS;
 
 function ControlePerdasContent() {
   const { filters } = useLossControlFilters();
@@ -56,9 +59,9 @@ function ControlePerdasContent() {
           </div>
           <div className="flex items-center gap-2">
             <TutorialButton
-              videoUrl="https://drive.google.com/file/d/1apy-0bd2DFl3tTeeVnRywNhE4ntSn8Pp/view?usp=sharing"
-              title="Tutorial - Controle de Perdas"
-              description="Aprenda a gerenciar as perdas da sua padaria."
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
             />
             <NewLossControlDialog />
           </div>

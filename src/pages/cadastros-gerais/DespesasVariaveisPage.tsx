@@ -1,7 +1,10 @@
+import { TutorialButton } from "~/components/TutorialButton";
+import { DESPESAS_VIDEOS } from "~/constants/tutorialVideos";
 import { useExpenses } from "~/hooks/expenses/useExpenses";
 import { ExpenseFiltersProvider, useExpenseFilters } from "~/hooks/filters";
 import { ExpensesTable, Filters, NewExpenseDialog } from "./components";
-import { TutorialButton } from "~/components/TutorialButton";
+
+const tutorial = DESPESAS_VIDEOS.find((v) => v.id === "despesas-variaveis")!;
 
 function DespesasVariaveisContent() {
   const { filters } = useExpenseFilters();
@@ -21,9 +24,9 @@ function DespesasVariaveisContent() {
           </div>
           <div className="flex items-center gap-2">
             <TutorialButton
-              videoUrl="https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing"
-              title="Tutorial - Despesas Variáveis"
-              description="Aprenda a gerenciar as despesas variáveis da sua padaria."
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
             />
             <NewExpenseDialog isFixed={false} />
           </div>

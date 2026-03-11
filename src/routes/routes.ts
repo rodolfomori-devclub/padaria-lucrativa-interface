@@ -5,6 +5,7 @@ import {
   ChartNoAxesCombined,
   ChefHat,
   FileText,
+  GraduationCap,
   Home,
   Package,
   Settings,
@@ -27,6 +28,7 @@ export const ROUTES = {
   // Dashboard routes
   DASHBOARD: "/dashboard",
   PROFILE: "/profile",
+  TUTORIAIS: "/tutoriais",
 
   // Cadastros Gerais
   DESPESAS_FIXAS: "/despesas-fixas",
@@ -154,6 +156,11 @@ export const BASIC_SIDEBAR_NAVIGATION: NavItem[] = [
     href: ROUTES.PROJECAO_VENDAS,
     icon: TrendingUp,
   },
+  {
+    name: "Tutoriais",
+    href: ROUTES.TUTORIAIS,
+    icon: GraduationCap,
+  },
 ];
 
 export const PRO_SIDEBAR_NAVIGATION: NavItem[] = [
@@ -174,6 +181,11 @@ export const PRO_SIDEBAR_NAVIGATION: NavItem[] = [
       },
     ],
   },
+  {
+    name: "Tutoriais",
+    href: ROUTES.TUTORIAIS,
+    icon: GraduationCap,
+  },
 ];
 
 export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
@@ -191,6 +203,11 @@ export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
     name: "Funcionários",
     href: ROUTES.ADMIN_FUNCIONARIOS,
     icon: User,
+  },
+  {
+    name: "Tutoriais",
+    href: ROUTES.TUTORIAIS,
+    icon: GraduationCap,
   },
   // {
   //   name: "Cadastros Gerais",

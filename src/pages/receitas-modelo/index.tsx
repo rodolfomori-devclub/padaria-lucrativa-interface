@@ -1,12 +1,15 @@
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "~/components/ui/button";
+import { TutorialButton } from "~/components/TutorialButton";
 import { Loading } from "~/components/ui/loading";
+import { RECEITAS_MODELO_VIDEOS } from "~/constants/tutorialVideos";
+import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
 import { useRecipes } from "~/hooks/recipes/useRecipes";
 import { ROUTES } from "~/routes/routes";
 import { RecipesTable } from "./components/RecipesTable";
-import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
-import { TutorialButton } from "~/components/TutorialButton";
+
+const [tutorial] = RECEITAS_MODELO_VIDEOS;
 
 export const ReceitasModeloPage = () => {
   const { recipes, isLoading, error } = useRecipes();
@@ -49,9 +52,9 @@ export const ReceitasModeloPage = () => {
           )}
           <div className="flex items-center gap-2">
             <TutorialButton
-              videoUrl="https://drive.google.com/file/d/11WcW2t0X61eDbIBayGH0w5FO-n6HAu59/view?usp=sharing"
-              title="Tutorial - Receitas Modelo"
-              description="Aprenda a gerenciar as receitas modelo da sua padaria."
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
             />
             <Link to={ROUTES.RECEITAS_MODELO_NOVA}>
               <Button className="flex items-center gap-2">

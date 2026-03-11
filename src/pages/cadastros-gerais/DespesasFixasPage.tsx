@@ -1,7 +1,10 @@
 import { TutorialButton } from "~/components/TutorialButton";
+import { DESPESAS_VIDEOS } from "~/constants/tutorialVideos";
 import { useExpenses } from "~/hooks/expenses/useExpenses";
 import { ExpenseFiltersProvider, useExpenseFilters } from "~/hooks/filters";
 import { ExpensesTable, Filters, NewExpenseDialog } from "./components";
+
+const tutorial = DESPESAS_VIDEOS.find((v) => v.id === "despesas-fixas")!;
 
 function DespesasFixasContent() {
   const { filters } = useExpenseFilters();
@@ -19,9 +22,9 @@ function DespesasFixasContent() {
           </div>
           <div className="flex items-center gap-2">
             <TutorialButton
-              videoUrl="https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing"
-              title="Tutorial - Despesas Fixas"
-              description="Aprenda a gerenciar as despesas fixas da sua padaria."
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
             />
             <NewExpenseDialog isFixed={true} />
           </div>

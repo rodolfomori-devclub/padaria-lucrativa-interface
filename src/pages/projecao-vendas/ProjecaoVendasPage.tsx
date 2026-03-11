@@ -1,6 +1,9 @@
+import { PROJECAO_VENDAS_VIDEOS } from "~/constants/tutorialVideos";
 import { SalesProjectionFiltersProvider } from "~/hooks/filters/sales-projection-filters";
 import { Filters, SalesProjectionTable } from "./components";
 import { TutorialButton } from "~/components/TutorialButton";
+
+const [tutorial] = PROJECAO_VENDAS_VIDEOS;
 
 export function ProjecaoVendasPage() {
   return (
@@ -17,9 +20,9 @@ export function ProjecaoVendasPage() {
             </p>
           </div>
           <TutorialButton
-            videoUrl="https://drive.google.com/file/d/15YS_cF8ciC3EE75qaSLGNkYxqfpVMoGx/view?usp=sharing"
-            title="Tutorial - Projeção de Vendas"
-            description="Aprenda a gerenciar as projeções de vendas da sua padaria."
+            videoUrl={tutorial.videoUrl}
+            title={tutorial.title}
+            description={tutorial.description}
           />
         </div>
 
