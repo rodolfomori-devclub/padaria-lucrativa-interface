@@ -18,7 +18,7 @@ import {
 } from "./pages";
 import { ClientsPage } from "./pages/admin/clientes";
 import { EmployeesPage } from "./pages/admin/funcionarios";
-import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
+import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from "./pages/auth";
 import {
   DespesasFixasPage,
   DespesasVariaveisPage,
@@ -51,6 +51,10 @@ function App() {
           <Route
             path={ROUTES.FORGOT_PASSWORD}
             element={<ForgotPasswordPage />}
+          />
+          <Route
+            path={ROUTES.RESET_PASSWORD}
+            element={<ResetPasswordPage />}
           />
 
           {/* Nested Dashboard Routes */}

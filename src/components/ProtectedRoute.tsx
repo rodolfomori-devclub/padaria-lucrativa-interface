@@ -13,7 +13,11 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     const { user, isLoading, isInitialized } = useAuth()
     const { pathname } = useLocation()
 
-    const isAuthPage = pathname === ROUTES.LOGIN || pathname === ROUTES.REGISTER
+    const isAuthPage =
+        pathname === ROUTES.LOGIN ||
+        pathname === ROUTES.REGISTER ||
+        pathname === ROUTES.FORGOT_PASSWORD ||
+        pathname === ROUTES.RESET_PASSWORD
 
     // Show loading while authentication is being initialized
     if (!isInitialized || (isLoading && !isAuthPage)) {
