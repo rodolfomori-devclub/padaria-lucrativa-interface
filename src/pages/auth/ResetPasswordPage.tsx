@@ -14,6 +14,7 @@ export function ResetPasswordPage() {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
     const token = searchParams.get('token')
+    const isInvite = searchParams.get('type') === 'invite'
 
     const { data: validation, isLoading: isValidating } = useQuery({
         queryKey: ['validate-reset-token', token],
@@ -40,7 +41,7 @@ export function ResetPasswordPage() {
     const { mutateAsync, isPending } = useMutation({
         mutationFn: authService.resetPassword,
         onSuccess: () => {
-            toast.success('Senha redefinida com sucesso! Faça login para continuar.')
+            toast.success(isInvite ? 'Senha definida com sucesso! Faça login para continuar.' : 'Senha redefinida com sucesso! Faça login para continuar.')
             navigate(ROUTES.LOGIN)
         },
         onError: (error: unknown) => {
@@ -135,10 +136,10 @@ export function ResetPasswordPage() {
                 <div className="max-w-md w-full space-y-8">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-base">
-                            Redefinir senha
+                            {isInvite ? 'Definir senha' : 'Redefinir senha'}
                         </h2>
                         <p className="mt-2 text-gray-600">
-                            Digite sua nova senha abaixo
+                            {isInvite ? 'Defina sua senha para acessar a plataforma' : 'Digite sua nova senha abaixo'}
                         </p>
                     </div>
 
@@ -146,7 +147,7 @@ export function ResetPasswordPage() {
                         <input type="hidden" {...register('token')} />
 
                         <div>
-                            <Label htmlFor="password">Nova senha</Label>
+                            <Label htmlFor="password">{isInvite ? 'Senha' : 'Nova senha'}</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -185,10 +186,10 @@ export function ResetPasswordPage() {
                             {isPending ? (
                                 <div className="flex items-center gap-2">
                                     <Loading size="sm" />
-                                    Redefinindo...
+                                    {isInvite ? 'Definindo...' : 'Redefinindo...'}
                                 </div>
                             ) : (
-                                'Redefinir senha'
+                                isInvite ? 'Definir senha' : 'Redefinir senha'
                             )}
                         </Button>
 
