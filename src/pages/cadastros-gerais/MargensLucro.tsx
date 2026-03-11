@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { TutorialButton } from "~/components/TutorialButton";
 import { Label } from "~/components/ui";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -109,11 +110,19 @@ export function MargensLucroPage() {
 
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Margens de Lucro</h1>
-        <p className="text-gray-600 mt-2">
-          Configure os percentuais para cálculo das margens de lucro
-        </p>
+      <div className="flex items-center justify-between">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Margens de Lucro</h1>
+          <p className="text-gray-600 mt-2">
+            Configure os percentuais para cálculo das margens de lucro
+          </p>
+        </div>
+
+        <TutorialButton
+          videoUrl="https://drive.google.com/file/d/1YlhtH9y8qNiZgFk9E3Dcc-2P1TeHyWYO/view?usp=sharing"
+          title="Tutorial - Margens de Lucro"
+          description="Aprenda a configurar as margens de lucro da sua padaria."
+        />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>

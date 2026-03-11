@@ -6,6 +6,7 @@ import { useRecipes } from "~/hooks/recipes/useRecipes";
 import { ROUTES } from "~/routes/routes";
 import { RecipesTable } from "./components/RecipesTable";
 import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
+import { TutorialButton } from "~/components/TutorialButton";
 
 export const ReceitasModeloPage = () => {
   const { recipes, isLoading, error } = useRecipes();
@@ -46,12 +47,19 @@ export const ReceitasModeloPage = () => {
               </span>
             </div>
           )}
-          <Link to={ROUTES.RECEITAS_MODELO_NOVA}>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Nova Receita
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <TutorialButton
+              videoUrl="https://drive.google.com/file/d/11WcW2t0X61eDbIBayGH0w5FO-n6HAu59/view?usp=sharing"
+              title="Tutorial - Receitas Modelo"
+              description="Aprenda a gerenciar as receitas modelo da sua padaria."
+            />
+            <Link to={ROUTES.RECEITAS_MODELO_NOVA}>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Nova Receita
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
       <RecipesTable recipes={recipes} coefficient={coefficient} />

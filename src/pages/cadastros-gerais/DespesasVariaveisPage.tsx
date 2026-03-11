@@ -1,38 +1,50 @@
-import { useExpenses } from '~/hooks/expenses/useExpenses'
-import { ExpenseFiltersProvider, useExpenseFilters } from '~/hooks/filters'
-import { ExpensesTable, Filters, NewExpenseDialog } from './components'
+import { useExpenses } from "~/hooks/expenses/useExpenses";
+import { ExpenseFiltersProvider, useExpenseFilters } from "~/hooks/filters";
+import { ExpensesTable, Filters, NewExpenseDialog } from "./components";
+import { TutorialButton } from "~/components/TutorialButton";
 
 function DespesasVariaveisContent() {
-    const { filters } = useExpenseFilters()
-    const { expenses, isLoading } = useExpenses(filters)
+  const { filters } = useExpenseFilters();
+  const { expenses, isLoading } = useExpenses(filters);
 
-    return (
-        <div className="p-8">
-            <div className="mb-8">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Despesas Variáveis</h1>
-                        <p className="text-gray-600 mt-2">Gerencie as despesas variáveis da padaria</p>
-                    </div>
-                    <NewExpenseDialog isFixed={false} />
-                </div>
-            </div>
-
-            <Filters />
-
-            <ExpensesTable
-                expenses={expenses}
-                isLoading={isLoading}
-                isFixed={false}
+  return (
+    <div className="p-8">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Despesas Variáveis
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Gerencie as despesas variáveis da padaria
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <TutorialButton
+              videoUrl="https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing"
+              title="Tutorial - Despesas Variáveis"
+              description="Aprenda a gerenciar as despesas variáveis da sua padaria."
             />
+            <NewExpenseDialog isFixed={false} />
+          </div>
         </div>
-    )
+      </div>
+
+      <Filters />
+
+      <ExpensesTable
+        expenses={expenses}
+        isLoading={isLoading}
+        isFixed={false}
+      />
+    </div>
+  );
 }
 
 export function DespesasVariaveisPage() {
-    return (
-        <ExpenseFiltersProvider isFixed={false}>
-            <DespesasVariaveisContent />
-        </ExpenseFiltersProvider>
-    )
-} 
+  return (
+    <ExpenseFiltersProvider isFixed={false}>
+      <DespesasVariaveisContent />
+    </ExpenseFiltersProvider>
+  );
+}
