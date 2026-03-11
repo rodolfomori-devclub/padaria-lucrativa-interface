@@ -9,6 +9,7 @@ import { ROUTES } from '~/routes/routes'
 import { loginSchema, type LoginFormData } from '~/schema/auth'
 import { authService } from '~/services/auth'
 import type { AuthResponse } from '~/types/auth'
+import { UserRole } from '~/types/user'
 
 export function LoginPage() {
     const navigate = useNavigate()
@@ -29,7 +30,12 @@ export function LoginPage() {
         },
         onSuccess: (data: AuthResponse) => {
             login(data)
-            navigate(ROUTES.DASHBOARD)
+            const isStaff = data.user.role === UserRole.ADMIN || data.user.role === UserRole.EMPLOYEE
+            if (data.user.isFirstLogin) {
+                navigate(ROUTES.TUTORIAIS)
+            } else {
+                navigate(isStaff ? ROUTES.ADMIN_CLIENTES : ROUTES.DASHBOARD)
+            }
         },
         onError: () => {
             toast.error("E-mail ou senha inválidos")

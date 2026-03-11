@@ -36,7 +36,7 @@ export function RegisterPage() {
         },
         onSuccess: (data: AuthResponse) => {
             login(data)
-            navigate(ROUTES.DASHBOARD)
+            navigate(ROUTES.TUTORIAIS)
         },
         onError: (error) => {
             setError(error.message)

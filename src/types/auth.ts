@@ -16,6 +16,11 @@ export interface ForgotPasswordData {
     email: string
 }
 
+export interface ResetPasswordData {
+    token: string
+    password: string
+}
+
 export interface AuthResponse {
     token: string
     user: User

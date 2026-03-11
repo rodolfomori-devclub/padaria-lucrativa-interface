@@ -24,6 +24,7 @@ interface AuthContextValue extends AuthState {
   logout: () => void;
   clearError: () => void;
   initializeAuth: () => Promise<void>;
+  completeTutorials: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue>(
@@ -68,6 +69,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       isInitialized: true,
       error: null,
     });
+  }, []);
+
+  const completeTutorials = useCallback(async () => {
+    const user = await authService.completeTutorials();
+    setAuthState((prev) => ({
+      ...prev,
+      user,
+      isProUser: user.plan?.type === PlanType.PRO,
+    }));
   }, []);
 
   const initializeAuth = useCallback(async () => {
@@ -117,6 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     clearError,
     initializeAuth,
+    completeTutorials,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

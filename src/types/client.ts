@@ -6,7 +6,6 @@ export interface CreateClientData {
     name: string
     email: string
     phone: string
-    password: string
     planType: PlanType
     expiresAt: string
 }

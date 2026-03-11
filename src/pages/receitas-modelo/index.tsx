@@ -1,11 +1,15 @@
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "~/components/ui/button";
+import { TutorialButton } from "~/components/TutorialButton";
 import { Loading } from "~/components/ui/loading";
+import { RECEITAS_MODELO_VIDEOS } from "~/constants/tutorialVideos";
+import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
 import { useRecipes } from "~/hooks/recipes/useRecipes";
 import { ROUTES } from "~/routes/routes";
 import { RecipesTable } from "./components/RecipesTable";
-import { useCoefficient } from "~/hooks/coefficient/useCoefficient";
+
+const [tutorial] = RECEITAS_MODELO_VIDEOS;
 
 export const ReceitasModeloPage = () => {
   const { recipes, isLoading, error } = useRecipes();
@@ -46,12 +50,19 @@ export const ReceitasModeloPage = () => {
               </span>
             </div>
           )}
-          <Link to={ROUTES.RECEITAS_MODELO_NOVA}>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Nova Receita
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <TutorialButton
+              videoUrl={tutorial.videoUrl}
+              title={tutorial.title}
+              description={tutorial.description}
+            />
+            <Link to={ROUTES.RECEITAS_MODELO_NOVA}>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Nova Receita
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
       <RecipesTable recipes={recipes} coefficient={coefficient} />

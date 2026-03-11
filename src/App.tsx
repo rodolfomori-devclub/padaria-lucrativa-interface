@@ -18,7 +18,7 @@ import {
 } from "./pages";
 import { ClientsPage } from "./pages/admin/clientes";
 import { EmployeesPage } from "./pages/admin/funcionarios";
-import { ForgotPasswordPage, LoginPage, RegisterPage } from "./pages/auth";
+import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from "./pages/auth";
 import {
   DespesasFixasPage,
   DespesasVariaveisPage,
@@ -29,6 +29,7 @@ import { CargosPage, DespesasPessoalPage } from "./pages/despesas-pessoal";
 import { BoletosPage, FornecedoresPage } from "./pages/fornecedores";
 import { MixDeMargensProjeção, MixFamilyPages } from "./pages/mix-de-margens";
 import { ProjecaoVendasPage } from "./pages/projecao-vendas";
+import { TutoriaisPage } from "./pages/tutoriais";
 import { ROUTES } from "./routes/routes";
 import { PlanType } from "./types/plan";
 
@@ -51,6 +52,10 @@ function App() {
           <Route
             path={ROUTES.FORGOT_PASSWORD}
             element={<ForgotPasswordPage />}
+          />
+          <Route
+            path={ROUTES.RESET_PASSWORD}
+            element={<ResetPasswordPage />}
           />
 
           {/* Nested Dashboard Routes */}
@@ -114,6 +119,7 @@ function App() {
               element={<MixDeMargensProjeção />}
             />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+            <Route path={ROUTES.TUTORIAIS} element={<TutoriaisPage />} />
           </Route>
 
           {/* Admin Routes */}

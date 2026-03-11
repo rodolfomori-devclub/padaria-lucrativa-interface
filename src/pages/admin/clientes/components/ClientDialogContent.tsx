@@ -120,23 +120,6 @@ export function ClientDialogContent({
                 <p className="mt-1 text-sm text-red-600">{errors.expiresAt.message}</p>
             )}
 
-
-            {!client && (
-                <div className="space-y-2">
-                    <Input
-                        id="password"
-                        label="Senha *"
-                        type="text"
-                        placeholder="Senha do cliente"
-                        {...register('password')}
-                        className={errors.password ? 'border-red-500' : ''}
-                    />
-                    {errors.password && (
-                        <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-                    )}
-                </div>
-            )}
-
             <div className="flex justify-end gap-2 pt-4">
                 <Button variant="outline" type="button" onClick={onCancel}>
                     Cancelar
