@@ -13,6 +13,7 @@ export {
     SidebarGroupLabel, SidebarHeader, SidebarMenuItem
 } from './sidebar'
 export { Switch } from './switch'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 export {
     Table, TableBody, TableCaption, TableCell, TableFooter,
     TableHead, TableHeader, TableRow
