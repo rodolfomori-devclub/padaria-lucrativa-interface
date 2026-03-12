@@ -8,7 +8,7 @@ export interface TutorialVideo {
 export const MARGENS_LUCRO_VIDEOS: TutorialVideo[] = [
   {
     id: "margens-lucro-principal",
-    title: "Margens de Lucro",
+    title: "Tutorial - Margens de Lucro",
     description: "Aprenda a configurar as margens de lucro da sua padaria.",
     videoUrl:
       "https://drive.google.com/file/d/1YlhtH9y8qNiZgFk9E3Dcc-2P1TeHyWYO/view?usp=sharing",
@@ -130,10 +130,10 @@ export const INTRODUCTION_VIDEO: TutorialVideo = {
 /** All tutorial videos in the system (aggregates all sections) */
 export const ALL_TUTORIAL_VIDEOS: TutorialVideo[] = [
   INTRODUCTION_VIDEO,
-  ...MARGENS_LUCRO_VIDEOS,
   ...PROJECAO_VENDAS_VIDEOS,
   ...CONTROLE_PERDAS_VIDEOS,
   ...RECEITAS_MODELO_VIDEOS,
   ...INSUMOS_VIDEOS,
   ...DESPESAS_VIDEOS,
+  ...MARGENS_LUCRO_VIDEOS,
 ];
