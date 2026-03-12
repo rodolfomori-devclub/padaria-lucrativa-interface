@@ -102,21 +102,20 @@ export const INSUMOS_VIDEOS: TutorialVideo[] = [
   },
 ];
 
-const DESPESAS_VIDEO_URL =
-  "https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing";
-
 export const DESPESAS_VIDEOS: TutorialVideo[] = [
   {
     id: "despesas-fixas",
     title: "Tutorial - Despesas Fixas",
     description: "Aprenda a gerenciar as despesas fixas da sua padaria.",
-    videoUrl: DESPESAS_VIDEO_URL,
+    videoUrl:
+      "https://drive.google.com/file/d/1TCGP55333aUY4qqjgRKWsyTlBCbr82HI/view?usp=sharing",
   },
   {
     id: "despesas-variaveis",
     title: "Tutorial - Despesas Variáveis",
     description: "Aprenda a gerenciar as despesas variáveis da sua padaria.",
-    videoUrl: DESPESAS_VIDEO_URL,
+    videoUrl:
+      "https://drive.google.com/file/d/1n8LFWQUYDhixa4PrmwsB82_HaMHf8nsk/view?usp=sharing",
   },
 ];
 
