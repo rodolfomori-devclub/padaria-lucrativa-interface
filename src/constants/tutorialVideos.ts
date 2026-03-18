@@ -127,13 +127,24 @@ export const INTRODUCTION_VIDEO: TutorialVideo = {
     "https://drive.google.com/file/d/1l3WIH-XTJqsgOQMr5kwb95ipuNV6vE57/view?usp=sharing",
 };
 
+export const DESPESAS_PESSOAL_VIDEOS: TutorialVideo[] = [
+  {
+    id: "despesas-pessoal",
+    title: "Tutorial - Despesas com Pessoal",
+    description: "Aprenda a gerenciar as despesas com pessoal da sua padaria.",
+    videoUrl:
+      "https://drive.google.com/file/d/1nfls4JHL4rkqUAQeNoodFnbjS4GDjN_F/view?usp=sharing",
+  },
+];
+
 /** All tutorial videos in the system (aggregates all sections) */
 export const ALL_TUTORIAL_VIDEOS: TutorialVideo[] = [
   INTRODUCTION_VIDEO,
+  ...DESPESAS_VIDEOS,
+  ...DESPESAS_PESSOAL_VIDEOS,
+  ...INSUMOS_VIDEOS,
+  ...RECEITAS_MODELO_VIDEOS,
   ...PROJECAO_VENDAS_VIDEOS,
   ...CONTROLE_PERDAS_VIDEOS,
-  ...RECEITAS_MODELO_VIDEOS,
-  ...INSUMOS_VIDEOS,
-  ...DESPESAS_VIDEOS,
   ...MARGENS_LUCRO_VIDEOS,
 ];
