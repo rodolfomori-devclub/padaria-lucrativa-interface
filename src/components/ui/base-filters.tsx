@@ -1,78 +1,88 @@
-import { useCallback } from "react"
-import { cn } from "~/lib/utils"
-import type { BaseDateFilters, FilterUpdateFunction } from "~/types/filters"
-import { formatCurrency } from "~/utils/formaters"
-import { MonthYearPicker } from "./date-picker"
+import { useCallback } from "react";
+import { cn } from "~/lib/utils";
+import type { BaseDateFilters, FilterUpdateFunction } from "~/types/filters";
+import { formatCurrency } from "~/utils/formaters";
+import { MonthYearPicker } from "./date-picker";
 
 interface BaseFiltersProps<T extends BaseDateFilters> {
-    filters: T
-    className?: string
-    total?: number | null
-    totalPurchase?: number | null
-    onFiltersChange: FilterUpdateFunction<T>
+  filters: T;
+  className?: string;
+  total?: number | null;
+  totalPurchase?: number | null;
+  onFiltersChange: FilterUpdateFunction<T>;
 }
 
 export function BaseFilters<T extends BaseDateFilters>({
-    filters,
-    className,
-    total,
-    totalPurchase,
-    onFiltersChange
+  filters,
+  className,
+  total,
+  totalPurchase,
+  onFiltersChange,
 }: BaseFiltersProps<T>) {
-    // Removed filter type state since we only use month filter now
-    // const [filterType, setFilterType] = useState<'month' | 'range'>('month')
+  // Removed filter type state since we only use month filter now
+  // const [filterType, setFilterType] = useState<'month' | 'range'>('month')
 
-    const handleMonthYearChange = useCallback((monthYear: { month: number; year: number }) => {
-        onFiltersChange({
-            month: monthYear.month,
-            year: monthYear.year,
-            // Clear date range when switching to month mode
-            fromDate: undefined,
-            toDate: undefined
-        } as Partial<T>)
-    }, [onFiltersChange])
+  const handleMonthYearChange = useCallback(
+    (monthYear: { month: number; year: number }) => {
+      onFiltersChange({
+        month: monthYear.month,
+        year: monthYear.year,
+        // Clear date range when switching to month mode
+        fromDate: undefined,
+        toDate: undefined,
+        // Reset to first page when filters change
+        page: 1,
+      } as Partial<T>);
+    },
+    [onFiltersChange],
+  );
 
-    // Commented out date range functionality for future use
-    // const handleDateRangeChange = useCallback((from?: Date, to?: Date) => {
-    //     onFiltersChange({
-    //         fromDate: from,
-    //         toDate: to,
-    //         // Clear month/year when switching to range mode
-    //         month: undefined,
-    //         year: undefined
-    //     } as Partial<T>)
-    // }, [onFiltersChange])
+  // Commented out date range functionality for future use
+  // const handleDateRangeChange = useCallback((from?: Date, to?: Date) => {
+  //     onFiltersChange({
+  //         fromDate: from,
+  //         toDate: to,
+  //         // Clear month/year when switching to range mode
+  //         month: undefined,
+  //         year: undefined
+  //     } as Partial<T>)
+  // }, [onFiltersChange])
 
-    // const clearDateRange = useCallback(() => {
-    //     onFiltersChange({
-    //         fromDate: undefined,
-    //         toDate: undefined
-    //     } as Partial<T>)
-    // }, [onFiltersChange])
+  // const clearDateRange = useCallback(() => {
+  //     onFiltersChange({
+  //         fromDate: undefined,
+  //         toDate: undefined
+  //     } as Partial<T>)
+  // }, [onFiltersChange])
 
-    // const handleFilterTypeChange = useCallback((type: 'month' | 'range') => {
-    //     setFilterType(type)
+  // const handleFilterTypeChange = useCallback((type: 'month' | 'range') => {
+  //     setFilterType(type)
 
-    //     // Clear conflicting filters when switching modes
-    //     if (type === 'month') {
-    //         onFiltersChange({
-    //             fromDate: undefined,
-    //             toDate: undefined
-    //         } as Partial<T>)
-    //     } else {
-    //         onFiltersChange({
-    //             month: undefined,
-    //             year: undefined
-    //         } as Partial<T>)
-    //     }
-    // }, [onFiltersChange])
+  //     // Clear conflicting filters when switching modes
+  //     if (type === 'month') {
+  //         onFiltersChange({
+  //             fromDate: undefined,
+  //             toDate: undefined
+  //         } as Partial<T>)
+  //     } else {
+  //         onFiltersChange({
+  //             month: undefined,
+  //             year: undefined
+  //         } as Partial<T>)
+  //     }
+  // }, [onFiltersChange])
 
-    return (
-        <div className={cn("bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center", className)}>
-            <div className="flex items-center gap-4">
-                <h3 className="text-lg font-medium text-gray-900">Filtros</h3>
-                {/* Commented out filter type toggle buttons for future use */}
-                {/* <div className="flex gap-2">
+  return (
+    <div
+      className={cn(
+        "bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-center",
+        className,
+      )}
+    >
+      <div className="flex items-center gap-4">
+        <h3 className="text-lg font-medium text-gray-900">Filtros</h3>
+        {/* Commented out filter type toggle buttons for future use */}
+        {/* <div className="flex gap-2">
                     <Button
                         variant={filterType === 'month' ? 'default' : 'outline'}
                         size="sm"
@@ -88,38 +98,37 @@ export function BaseFilters<T extends BaseDateFilters>({
                         Por Período
                     </Button>
                 </div> */}
-                {/* Only month filter is now active */}
-                <div className="flex items-center gap-4">
-                    <MonthYearPicker
-                        value={{
-                            month: filters.month || new Date().getMonth() + 1,
-                            year: filters.year || new Date().getFullYear()
-                        }}
-                        onChange={handleMonthYearChange}
-                    />
-                </div>
-            </div>
+        {/* Only month filter is now active */}
+        <div className="flex items-center gap-4">
+          <MonthYearPicker
+            value={{
+              month: filters.month || new Date().getMonth() + 1,
+              year: filters.year || new Date().getFullYear(),
+            }}
+            onChange={handleMonthYearChange}
+          />
+        </div>
+      </div>
 
-            {total && !totalPurchase && (
-                <h3 className="text-lg font-medium text-gray-800">
-                    Total: {formatCurrency(total)}
-                </h3>
-            )}
+      {total && !totalPurchase && (
+        <h3 className="text-lg font-medium text-gray-800">
+          Total: {formatCurrency(total)}
+        </h3>
+      )}
 
-            {total && totalPurchase && (
-                <div className="flex items-center gap-4">
-                    <h3 className="text-lg font-medium text-gray-800">
-                        Total de Vendas: {formatCurrency(total)}
-                    </h3>
-                    <h3 className="text-lg font-medium text-gray-800">
-                        Total de Compras: {formatCurrency(totalPurchase)}
-                    </h3>
+      {total && totalPurchase && (
+        <div className="flex items-center gap-4">
+          <h3 className="text-lg font-medium text-gray-800">
+            Total de Vendas: {formatCurrency(total)}
+          </h3>
+          <h3 className="text-lg font-medium text-gray-800">
+            Total de Compras: {formatCurrency(totalPurchase)}
+          </h3>
+        </div>
+      )}
 
-                </div>
-            )}
-
-            {/* Commented out date range functionality for future use */}
-            {/* {filterType === 'range' && (
+      {/* Commented out date range functionality for future use */}
+      {/* {filterType === 'range' && (
                 <div className="flex items-center gap-4">
                     <DateRangePicker
                         from={filters.fromDate}
@@ -138,6 +147,6 @@ export function BaseFilters<T extends BaseDateFilters>({
                     )}
                 </div>
             )} */}
-        </div>
-    )
-} 
+    </div>
+  );
+}

@@ -48,7 +48,15 @@ export interface UpdateEmployeeExpenseData {
 
 import type { BaseDateFilters } from './filters'
 import type { Job } from './job'
+import type { PaginationMeta } from './pagination'
 
 export interface EmployeeExpenseFilters extends BaseDateFilters {
     jobId?: string
+    page?: number
+    limit?: number
+}
+
+export interface PaginatedEmployeeExpenseResponse {
+    data: EmployeeExpense[]
+    meta: PaginationMeta
 }

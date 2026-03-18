@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { employeeExpenseService } from '~/services/employee-expenses';
-import type { EmployeeExpense, EmployeeExpenseFilters } from '~/types/employee-expense';
+import type { EmployeeExpenseFilters, PaginatedEmployeeExpenseResponse } from '~/types/employee-expense';
 
 const EMPLOYEE_EXPENSES_QUERY_KEY = ['employee-expenses'];
 
@@ -10,21 +10,21 @@ export const useEmployeeExpenses = (filters?: EmployeeExpenseFilters) => {
         : EMPLOYEE_EXPENSES_QUERY_KEY
 
     const {
-        data: employeeExpenses = [],
+        data,
         isLoading,
         error,
     } = useQuery({
         queryKey,
-        queryFn: async (): Promise<EmployeeExpense[]> => {
-            const response = await employeeExpenseService.getAll(filters)
-            return response
+        queryFn: async (): Promise<PaginatedEmployeeExpenseResponse> => {
+            return await employeeExpenseService.getAll(filters)
         },
     })
 
-    const total = employeeExpenses.reduce((acc, expense) => acc + expense.netSalary, 0) || null
+    const total = data?.data.reduce((acc, expense) => acc + expense.netSalary, 0) || null
 
     return {
-        employeeExpenses,
+        employeeExpenses: data?.data || [],
+        meta: data?.meta,
         isLoading,
         error,
         total,

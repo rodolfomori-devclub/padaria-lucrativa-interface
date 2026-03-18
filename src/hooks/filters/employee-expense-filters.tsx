@@ -26,6 +26,8 @@ export function EmployeeExpenseFiltersProvider({
     const defaultFilters: EmployeeExpenseFilters = useMemo(() => ({
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
+        page: 1,
+        limit: 15,
         ...initialFilters
     }), [initialFilters])
 

@@ -38,64 +38,62 @@ export function EmployeeExpensesTable({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>Cargo</TableHead>
-            <TableHead>Salário Base</TableHead>
-            <TableHead>Horas Extras</TableHead>
-            <TableHead>Salário Bruto</TableHead>
-            <TableHead>Benefícios</TableHead>
-            <TableHead>Salário Líquido</TableHead>
-            <TableHead>Data de Criação</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-center">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {employeeExpenses.map((expense) => {
-            const benefits =
-              (expense.transport || 0) + (expense.meal || 0) + expense.fgts;
-            return (
-              <TableRow key={expense.id}>
-                <TableCell className="font-medium">{expense.name}</TableCell>
-                <TableCell>{expense.job?.name || "N/A"}</TableCell>
-                <TableCell>{formatCurrency(expense.baseSalary)}</TableCell>
-                <TableCell>{formatCurrency(expense.extraHours)}</TableCell>
-                <TableCell>{formatCurrency(expense.grossSalary)}</TableCell>
-                <TableCell>{formatCurrency(benefits)}</TableCell>
-                <TableCell className="font-semibold">
-                  {formatCurrency(expense.netSalary)}
-                </TableCell>
-                <TableCell>{formatMonthYear(expense.createdAt)}</TableCell>
-                <TableCell>
-                  {expense.recurringTemplateId ? (
-                    <Badge className="gap-1 bg-blue-500">
-                      <Repeat className="size-3 text-white" />
-                      Recorrente
-                    </Badge>
-                  ) : (
-                    <Badge
-                      variant="outline"
-                      className="bg-gray-200 text-gray-800"
-                    >
-                      Pontual
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <EditEmployeeExpenseDialog employeeExpense={expense} />
-                    <DeleteEmployeeExpenseDialog employeeExpense={expense} />
-                  </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Nome</TableHead>
+          <TableHead>Cargo</TableHead>
+          <TableHead>Salário Base</TableHead>
+          <TableHead>Horas Extras</TableHead>
+          <TableHead>Salário Bruto</TableHead>
+          <TableHead>Benefícios</TableHead>
+          <TableHead>Salário Líquido</TableHead>
+          <TableHead>Data de Criação</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-center">Ações</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {employeeExpenses.map((expense) => {
+          const benefits =
+            (expense.transport || 0) + (expense.meal || 0) + expense.fgts;
+          return (
+            <TableRow key={expense.id}>
+              <TableCell className="font-medium">{expense.name}</TableCell>
+              <TableCell>{expense.job?.name || "N/A"}</TableCell>
+              <TableCell>{formatCurrency(expense.baseSalary)}</TableCell>
+              <TableCell>{formatCurrency(expense.extraHours)}</TableCell>
+              <TableCell>{formatCurrency(expense.grossSalary)}</TableCell>
+              <TableCell>{formatCurrency(benefits)}</TableCell>
+              <TableCell className="font-semibold">
+                {formatCurrency(expense.netSalary)}
+              </TableCell>
+              <TableCell>{formatMonthYear(expense.createdAt)}</TableCell>
+              <TableCell>
+                {expense.recurringTemplateId ? (
+                  <Badge className="gap-1 bg-blue-500">
+                    <Repeat className="size-3 text-white" />
+                    Recorrente
+                  </Badge>
+                ) : (
+                  <Badge
+                    variant="outline"
+                    className="bg-gray-200 text-gray-800"
+                  >
+                    Pontual
+                  </Badge>
+                )}
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="flex justify-end gap-2">
+                  <EditEmployeeExpenseDialog employeeExpense={expense} />
+                  <DeleteEmployeeExpenseDialog employeeExpense={expense} />
+                </div>
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 }

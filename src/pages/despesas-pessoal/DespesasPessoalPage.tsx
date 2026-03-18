@@ -1,10 +1,19 @@
+import { Pagination } from '~/components/Pagination'
 import { useEmployeeExpenses } from '~/hooks/employee-expenses/useEmployeeExpenses'
 import { EmployeeExpenseFiltersProvider, useEmployeeExpenseFilters } from '~/hooks/filters/employee-expense-filters'
 import { EmployeeExpensesTable, Filters, NewEmployeeExpenseDialog } from './components'
 
 function DespesasPessoalContent() {
-    const { filters } = useEmployeeExpenseFilters()
-    const { employeeExpenses, isLoading } = useEmployeeExpenses(filters)
+    const { filters, updateFilters } = useEmployeeExpenseFilters()
+    const { employeeExpenses, meta, isLoading } = useEmployeeExpenses({
+        ...filters,
+        page: filters.page || 1,
+        limit: filters.limit || 15,
+    })
+
+    const handlePageChange = (page: number) => {
+        updateFilters({ page })
+    }
 
     return (
         <div className="p-8">
@@ -20,10 +29,15 @@ function DespesasPessoalContent() {
 
             <Filters />
 
-            <EmployeeExpensesTable
-                employeeExpenses={employeeExpenses}
-                isLoading={isLoading}
-            />
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+                <EmployeeExpensesTable
+                    employeeExpenses={employeeExpenses}
+                    isLoading={isLoading}
+                />
+                {meta && meta.totalPages > 1 && (
+                    <Pagination meta={meta} onPageChange={handlePageChange} />
+                )}
+            </div>
         </div>
     )
 }
