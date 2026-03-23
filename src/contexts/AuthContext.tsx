@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import posthog from "posthog-js";
 import {
   createContext,
   useCallback,
@@ -28,7 +29,7 @@ interface AuthContextValue extends AuthState {
 }
 
 export const AuthContext = createContext<AuthContextValue>(
-  {} as AuthContextValue
+  {} as AuthContextValue,
 );
 
 interface AuthProviderProps {
@@ -95,6 +96,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
       const user = await authService.me();
+      posthog.identify(user.email, {
+        email: user.email,
+      });
 
       setAuthState({
         user,
