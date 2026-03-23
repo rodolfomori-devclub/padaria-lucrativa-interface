@@ -49,6 +49,9 @@ export function LoginPage() {
     posthog.capture("login", {
       email: data.email,
     });
+    posthog.identify(data.email, {
+      email: data.email,
+    });
     await mutateAsync(data);
   };
 
