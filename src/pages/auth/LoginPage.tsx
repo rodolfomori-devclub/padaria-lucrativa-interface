@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import posthog from "posthog-js";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -45,6 +46,9 @@ export function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
+    posthog.capture("login", {
+      email: data.email,
+    });
     await mutateAsync(data);
   };
 
