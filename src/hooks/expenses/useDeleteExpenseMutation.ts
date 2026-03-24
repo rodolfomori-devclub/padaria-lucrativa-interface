@@ -4,8 +4,9 @@ import toast from "react-hot-toast";
 import { useExpenseFilters } from "~/hooks/filters";
 import { queryClient } from "~/lib/queryClient";
 import { expenseService } from "~/services/expenses";
-import type { Expense } from "~/types/expense";
+import type { PaginatedExpenseResponse } from "~/types/expense";
 import { EXPENSES_QUERY_KEY } from "./useCreateExpenseMutation";
+import { DASHBOARD_QUERY_KEY } from "../dashboard/useDashboardData";
 
 interface DeleteExpenseResponse {
   deletedCount: number;
@@ -23,13 +24,18 @@ export function useDeleteExpenseMutation() {
   >({
     mutationFn: (id: string) => expenseService.delete(id),
     onMutate: (variables) => {
-      const previousExpenses = queryClient.getQueryData<Expense[]>(queryKey);
+      const previousData = queryClient.getQueryData<PaginatedExpenseResponse>(queryKey);
 
-      queryClient.setQueryData(queryKey, (old: Expense[]) =>
-        old.filter((expense) => expense.id !== variables),
-      );
+      queryClient.setQueryData(queryKey, (old: PaginatedExpenseResponse) => ({
+        ...old,
+        data: old.data.filter((expense) => expense.id !== variables),
+        meta: {
+          ...old.meta,
+          total: old.meta.total - 1,
+        },
+      }));
 
-      return { previousExpenses };
+      return { previousData };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: EXPENSES_QUERY_KEY });
@@ -45,7 +51,7 @@ export function useDeleteExpenseMutation() {
     onError: (error, _variables, context) => {
       queryClient.setQueryData(
         queryKey,
-        (context as { previousExpenses?: Expense[] })?.previousExpenses,
+        (context as { previousData?: PaginatedExpenseResponse })?.previousData,
       );
       if (error instanceof AxiosError) {
         toast.error(
@@ -55,6 +61,17 @@ export function useDeleteExpenseMutation() {
       } else {
         toast.error("Erro ao remover despesa");
       }
+    },
+    onSettled: () => {
+      // Invalidate all expenses queries (different filters, pages, etc.)
+      queryClient.invalidateQueries({
+        queryKey: EXPENSES_QUERY_KEY,
+      });
+
+      // Invalidate dashboard since it uses expenses data
+      queryClient.invalidateQueries({
+        queryKey: DASHBOARD_QUERY_KEY,
+      });
     },
   });
 

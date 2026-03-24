@@ -1,3 +1,4 @@
+import { Pagination } from "~/components/Pagination";
 import { TutorialButton } from "~/components/TutorialButton";
 import { DESPESAS_VIDEOS } from "~/constants/tutorialVideos";
 import { useExpenses } from "~/hooks/expenses/useExpenses";
@@ -7,8 +8,16 @@ import { ExpensesTable, Filters, NewExpenseDialog } from "./components";
 const tutorial = DESPESAS_VIDEOS.find((v) => v.id === "despesas-fixas")!;
 
 function DespesasFixasContent() {
-  const { filters } = useExpenseFilters();
-  const { expenses, isLoading } = useExpenses(filters);
+  const { filters, updateFilters } = useExpenseFilters();
+  const { expenses, meta, isLoading } = useExpenses({
+    ...filters,
+    page: filters.page || 1,
+    limit: filters.limit || 15,
+  });
+
+  const handlePageChange = (page: number) => {
+    updateFilters({ page });
+  };
 
   return (
     <div className="p-8">
@@ -33,7 +42,12 @@ function DespesasFixasContent() {
 
       <Filters />
 
-      <ExpensesTable expenses={expenses} isLoading={isLoading} isFixed={true} />
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+        <ExpensesTable expenses={expenses} isLoading={isLoading} isFixed={true} />
+        {meta && meta.totalPages > 1 && (
+          <Pagination meta={meta} onPageChange={handlePageChange} />
+        )}
+      </div>
     </div>
   );
 }

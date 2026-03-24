@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { expenseService } from '~/services/expenses'
-import type { Expense, ExpenseFilters } from '~/types/expense'
+import type { ExpenseFilters, PaginatedExpenseResponse } from '~/types/expense'
 import { EXPENSES_QUERY_KEY } from './useCreateExpenseMutation'
 
 export const useExpenses = (filters?: ExpenseFilters) => {
@@ -9,21 +9,21 @@ export const useExpenses = (filters?: ExpenseFilters) => {
         : EXPENSES_QUERY_KEY
 
     const {
-        data: expenses = [],
+        data,
         isLoading,
         error,
     } = useQuery({
         queryKey,
-        queryFn: async (): Promise<Expense[]> => {
-            const response = await expenseService.getAll(filters)
-            return response
+        queryFn: async (): Promise<PaginatedExpenseResponse> => {
+            return await expenseService.getAll(filters)
         },
     })
 
-    const total = expenses.reduce((acc, expense) => acc + expense.value, 0) || null
+    const total = data?.data.reduce((acc, expense) => acc + expense.value, 0) || null
 
     return {
-        expenses,
+        expenses: data?.data || [],
+        meta: data?.meta,
         isLoading,
         error,
         total,

@@ -37,6 +37,8 @@ export function ExpenseFiltersProvider({
       isFixed,
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
+      page: 1,
+      limit: 15,
       ...initialFilters,
     }),
     [isFixed, initialFilters],
@@ -45,7 +47,13 @@ export function ExpenseFiltersProvider({
   const [filters, setFiltersState] = useState<ExpenseFilters>(defaultFilters);
 
   const updateFilters = useCallback((updates: Partial<ExpenseFilters>) => {
-    setFiltersState((prev) => ({ ...prev, ...updates }));
+    setFiltersState((prev) => {
+      // Reset page to 1 when month or year changes
+      if (updates.month !== undefined || updates.year !== undefined) {
+        return { ...prev, ...updates, page: 1 };
+      }
+      return { ...prev, ...updates };
+    });
   }, []);
 
   const resetFilters = useCallback(() => {
