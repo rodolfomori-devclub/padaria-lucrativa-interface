@@ -26,7 +26,7 @@ export function Filters() {
         className="bg-transparent border-none shadow-none p-0"
         filters={filters}
         onFiltersChange={updateFilters}
-        total={total}
+        total={totalInCents}
       />
       {percentualDePerdas > 0 && (
         <h3 className="absolute top-5 right-4 text-lg font-medium text-gray-800">
