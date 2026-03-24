@@ -5,6 +5,7 @@ import { queryClient } from "~/lib/queryClient";
 import { employeeExpenseService } from "~/services/employee-expenses";
 import type { PaginatedEmployeeExpenseResponse } from "~/types/employee-expense";
 import { EMPLOYEE_EXPENSES_QUERY_KEY } from "./useCreateEmployeeExpenseMutation";
+import { DASHBOARD_QUERY_KEY } from "../dashboard/useDashboardData";
 
 export function useDeleteEmployeeExpenseMutation() {
   const { filters } = useEmployeeExpenseFilters();
@@ -49,6 +50,17 @@ export function useDeleteEmployeeExpenseMutation() {
         queryClient.setQueryData(queryKey, context.previousEmployeeExpenses);
       }
       toast.error("Erro ao excluir despesa com pessoal");
+    },
+    onSettled: () => {
+      // Invalidate all employee-expenses queries (different filters, pages, etc.)
+      queryClient.invalidateQueries({
+        queryKey: EMPLOYEE_EXPENSES_QUERY_KEY,
+      });
+
+      // Invalidate dashboard since it uses employee expenses data
+      queryClient.invalidateQueries({
+        queryKey: DASHBOARD_QUERY_KEY,
+      });
     },
   });
 

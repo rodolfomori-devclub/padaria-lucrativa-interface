@@ -46,8 +46,10 @@ export interface UpdateEmployeeExpenseData {
     transport?: number
     meal?: number
     netSalary?: number
+    isRecurring?: boolean
     recurringDayOfMonth?: number
     recurringStartDate?: string
+    admissionDate?: string
 }
 
 import type { BaseDateFilters } from './filters'

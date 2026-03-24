@@ -8,6 +8,7 @@ import type {
   EmployeeExpense,
   PaginatedEmployeeExpenseResponse,
 } from "~/types/employee-expense";
+import { DASHBOARD_QUERY_KEY } from "../dashboard/useDashboardData";
 
 export const EMPLOYEE_EXPENSES_QUERY_KEY = ["employee-expenses"];
 
@@ -76,6 +77,17 @@ export function useCreateEmployeeExpenseMutation() {
     onError: (_error, _variables, context) => {
       queryClient.setQueryData(queryKey, context?.previousEmployeeExpenses);
       toast.error("Erro ao criar despesa com pessoal");
+    },
+    onSettled: () => {
+      // Invalidate all employee-expenses queries (different filters, pages, etc.)
+      queryClient.invalidateQueries({
+        queryKey: EMPLOYEE_EXPENSES_QUERY_KEY,
+      });
+
+      // Invalidate dashboard since it uses employee expenses data
+      queryClient.invalidateQueries({
+        queryKey: DASHBOARD_QUERY_KEY,
+      });
     },
   });
 

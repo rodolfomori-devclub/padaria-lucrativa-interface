@@ -33,6 +33,7 @@ export function ExpenseDialogContent({
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema),
@@ -40,10 +41,12 @@ export function ExpenseDialogContent({
       name: expense?.name ?? "",
       value: expense?.value ?? undefined,
       isGovFee: expense?.isGovFee ?? false,
-      isRecurring: false,
-      recurrencePattern: undefined,
-      recurringStartDate: undefined,
-      recurringDayOfMonth: undefined,
+      isRecurring: !!expense?.recurringTemplateId,
+      recurrencePattern: expense?.recurrencePattern,
+      recurringStartDate: expense?.recurringStartDate
+        ? new Date(expense.recurringStartDate).toISOString().split('T')[0]
+        : undefined,
+      recurringDayOfMonth: expense?.recurringDayOfMonth,
     },
   });
 
@@ -134,89 +137,92 @@ export function ExpenseDialogContent({
         <p className="mt-1 text-sm text-red-600">{errors.value.message}</p>
       )}
 
-      {!isEditing && (
-        <>
+      <Controller
+        control={control}
+        name="isRecurring"
+        render={({ field }) => {
+          const { onChange, value, ...rest } = field;
+          return (
+            <div className="flex items-center gap-2 my-4">
+              <Switch
+                id="isRecurring"
+                {...rest}
+                checked={value}
+                onCheckedChange={(checked) => {
+                  onChange(checked);
+                  if (!checked) {
+                    setValue("recurrencePattern", undefined);
+                    setValue("recurringStartDate", undefined);
+                    setValue("recurringDayOfMonth", undefined);
+                  }
+                }}
+              />
+              <Label htmlFor="isRecurring">Tornar recorrente</Label>
+            </div>
+          );
+        }}
+      />
+
+      {isRecurring && (
+        <div className="space-y-4 border-t pt-4">
+          <h4 className="text-sm font-medium text-gray-700">Configuração de Recorrência</h4>
+          
           <Controller
             control={control}
-            name="isRecurring"
-            render={({ field }) => {
-              const { onChange, value, ...rest } = field;
-              return (
-                <div className="flex items-center gap-2 my-4">
-                  <Switch
-                    id="isRecurring"
-                    {...rest}
-                    checked={value}
-                    onCheckedChange={onChange}
-                  />
-                  <Label htmlFor="isRecurring">Tornar recorrente</Label>
-                </div>
-              );
-            }}
+            name="recurrencePattern"
+            render={({ field }) => (
+              <div>
+                <Label htmlFor="recurrencePattern">Frequência *</Label>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className={errors.recurrencePattern ? "border-red-500" : ""}>
+                    <SelectValue placeholder="Selecione a frequência" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="MONTHLY">Mensal</SelectItem>
+                    <SelectItem value="QUARTERLY">Trimestral (a cada 3 meses)</SelectItem>
+                    <SelectItem value="SEMIANNUAL">Semestral (a cada 6 meses)</SelectItem>
+                    <SelectItem value="ANNUAL">Anual</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.recurrencePattern && (
+                  <p className="mt-1 text-sm text-red-600">{errors.recurrencePattern.message}</p>
+                )}
+              </div>
+            )}
           />
 
-          {isRecurring && (
-            <div className="space-y-4 border-t pt-4">
-              <h4 className="text-sm font-medium text-gray-700">Configuração de Recorrência</h4>
-              
-              <Controller
-                control={control}
-                name="recurrencePattern"
-                render={({ field }) => (
-                  <div>
-                    <Label htmlFor="recurrencePattern">Frequência *</Label>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className={errors.recurrencePattern ? "border-red-500" : ""}>
-                        <SelectValue placeholder="Selecione a frequência" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="MONTHLY">Mensal</SelectItem>
-                        <SelectItem value="QUARTERLY">Trimestral (a cada 3 meses)</SelectItem>
-                        <SelectItem value="SEMIANNUAL">Semestral (a cada 6 meses)</SelectItem>
-                        <SelectItem value="ANNUAL">Anual</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.recurrencePattern && (
-                      <p className="mt-1 text-sm text-red-600">{errors.recurrencePattern.message}</p>
-                    )}
-                  </div>
-                )}
-              />
+          <div>
+            <UIInput
+              label="Data de Início *"
+              id="recurringStartDate"
+              type="date"
+              {...register("recurringStartDate")}
+              className={errors.recurringStartDate ? "border-red-500" : ""}
+            />
+            {errors.recurringStartDate && (
+              <p className="mt-1 text-sm text-red-600">{errors.recurringStartDate.message}</p>
+            )}
+          </div>
 
-              <div>
-                <UIInput
-                  label="Data de Início *"
-                  id="recurringStartDate"
-                  type="date"
-                  {...register("recurringStartDate")}
-                  className={errors.recurringStartDate ? "border-red-500" : ""}
-                />
-                {errors.recurringStartDate && (
-                  <p className="mt-1 text-sm text-red-600">{errors.recurringStartDate.message}</p>
-                )}
-              </div>
-
-              <div>
-                <UIInput
-                  label="Dia do Mês (1-31) *"
-                  id="recurringDayOfMonth"
-                  type="number"
-                  min="1"
-                  max="31"
-                  {...register("recurringDayOfMonth", { valueAsNumber: true })}
-                  className={errors.recurringDayOfMonth ? "border-red-500" : ""}
-                  placeholder="Ex: 5"
-                />
-                {errors.recurringDayOfMonth && (
-                  <p className="mt-1 text-sm text-red-600">{errors.recurringDayOfMonth.message}</p>
-                )}
-                <p className="mt-1 text-xs text-gray-500">
-                  Dia do mês em que a despesa será gerada automaticamente
-                </p>
-              </div>
-            </div>
-          )}
-        </>
+          <div>
+            <UIInput
+              label="Dia do Mês (1-31) *"
+              id="recurringDayOfMonth"
+              type="number"
+              min="1"
+              max="31"
+              {...register("recurringDayOfMonth", { valueAsNumber: true })}
+              className={errors.recurringDayOfMonth ? "border-red-500" : ""}
+              placeholder="Ex: 5"
+            />
+            {errors.recurringDayOfMonth && (
+              <p className="mt-1 text-sm text-red-600">{errors.recurringDayOfMonth.message}</p>
+            )}
+            <p className="mt-1 text-xs text-gray-500">
+              Dia do mês em que a despesa será gerada automaticamente
+            </p>
+          </div>
+        </div>
       )}
 
       <DialogFooter>

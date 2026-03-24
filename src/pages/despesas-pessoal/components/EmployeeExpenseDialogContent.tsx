@@ -228,8 +228,11 @@ export function EmployeeExpenseDialogContent({
             onCheckedChange={(checked) => {
               setIsRecurring(checked);
               setValue("isRecurring", checked);
+              if (!checked) {
+                setValue("recurringStartDate", undefined);
+                setValue("recurringDayOfMonth", undefined);
+              }
             }}
-            disabled={!!initialData}
           />
           <Label htmlFor="isRecurring">Funcionário Recorrente (Salário Mensal)</Label>
         </div>

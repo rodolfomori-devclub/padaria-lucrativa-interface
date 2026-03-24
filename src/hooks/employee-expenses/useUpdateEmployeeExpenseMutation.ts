@@ -9,6 +9,7 @@ import type {
   UpdateEmployeeExpenseData,
 } from "~/types/employee-expense";
 import { EMPLOYEE_EXPENSES_QUERY_KEY } from "./useCreateEmployeeExpenseMutation";
+import { DASHBOARD_QUERY_KEY } from "../dashboard/useDashboardData";
 
 interface UpdateEmployeeExpenseVariables {
   id: string;
@@ -109,6 +110,17 @@ export function useUpdateEmployeeExpenseMutation() {
       }
 
       toast.error("Erro ao atualizar despesa com pessoal");
+    },
+    onSettled: () => {
+      // Invalidate all employee-expenses queries (different filters, pages, etc.)
+      queryClient.invalidateQueries({
+        queryKey: EMPLOYEE_EXPENSES_QUERY_KEY,
+      });
+
+      // Invalidate dashboard since it uses employee expenses data
+      queryClient.invalidateQueries({
+        queryKey: DASHBOARD_QUERY_KEY,
+      });
     },
   });
 
