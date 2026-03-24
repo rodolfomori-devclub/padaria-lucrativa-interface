@@ -40,7 +40,9 @@ export function EmployeeExpenseDialogContent({
   initialData,
 }: EmployeeExpenseDialogContentProps) {
   const { jobs } = useJobs();
-  const [isRecurring, setIsRecurring] = useState(!!initialData?.recurringTemplateId);
+  const [isRecurring, setIsRecurring] = useState(
+    !!initialData?.recurringTemplateId || !!initialData?.recurringDayOfMonth
+  );
 
   const {
     register,
@@ -58,6 +60,10 @@ export function EmployeeExpenseDialogContent({
       transport: initialData?.transport || undefined,
       meal: initialData?.meal || undefined,
       isRecurring: !!initialData?.recurringTemplateId,
+      recurringDayOfMonth: initialData?.recurringDayOfMonth || undefined,
+      recurringStartDate: initialData?.recurringStartDate
+        ? new Date(initialData.recurringStartDate).toISOString().split('T')[0]
+        : undefined,
     },
   });
 

@@ -14,6 +14,8 @@ export interface EmployeeExpense {
     netSalary: number
     isActive: boolean
     recurringTemplateId?: string
+    recurringDayOfMonth?: number
+    recurringStartDate?: Date
     createdAt: Date
     updatedAt: Date
 }
@@ -44,6 +46,8 @@ export interface UpdateEmployeeExpenseData {
     transport?: number
     meal?: number
     netSalary?: number
+    recurringDayOfMonth?: number
+    recurringStartDate?: string
 }
 
 import type { BaseDateFilters } from './filters'
