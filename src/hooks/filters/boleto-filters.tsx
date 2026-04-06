@@ -26,13 +26,20 @@ export function BoletoFiltersProvider({
     const defaultFilters: BoletoFilters = useMemo(() => ({
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
+        page: 1,
+        limit: 15,
         ...initialFilters
     }), [initialFilters])
 
     const [filters, setFiltersState] = useState<BoletoFilters>(defaultFilters)
 
     const updateFilters = useCallback((updates: Partial<BoletoFilters>) => {
-        setFiltersState(prev => ({ ...prev, ...updates }))
+        setFiltersState((prev) => {
+            if (updates.month !== undefined || updates.year !== undefined) {
+                return { ...prev, ...updates, page: 1 }
+            }
+            return { ...prev, ...updates }
+        })
     }, [])
 
     const resetFilters = useCallback(() => {

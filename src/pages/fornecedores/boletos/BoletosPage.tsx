@@ -1,10 +1,19 @@
+import { Pagination } from '~/components/Pagination'
 import { useBoletos } from '~/hooks/boletos/useBoletos'
 import { BoletoFiltersProvider, useBoletoFilters } from '~/hooks/filters/boleto-filters'
 import { BoletosTable, Filters, NewBoletoDialog } from './components'
 
 function BoletosContent() {
-    const { filters } = useBoletoFilters()
-    const { boletos, isLoading } = useBoletos(filters)
+    const { filters, updateFilters } = useBoletoFilters()
+    const { boletos, isLoading, meta } = useBoletos({
+        ...filters,
+        page: filters.page || 1,
+        limit: filters.limit || 15,
+    })
+
+    const handlePageChange = (page: number) => {
+        updateFilters({ page })
+    }
 
     return (
         <div className="p-8">
@@ -20,10 +29,15 @@ function BoletosContent() {
 
             <Filters />
 
-            <BoletosTable
-                boletos={boletos}
-                isLoading={isLoading}
-            />
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+                <BoletosTable
+                    boletos={boletos}
+                    isLoading={isLoading}
+                />
+                {meta && meta.totalPages > 1 && (
+                    <Pagination meta={meta} onPageChange={handlePageChange} />
+                )}
+            </div>
         </div>
     )
 }

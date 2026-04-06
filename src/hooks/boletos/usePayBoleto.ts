@@ -13,39 +13,27 @@ export const usePayBoleto = () => {
             return response
         },
         onMutate: async (variables) => {
-            const previousBoletos = queryClient.getQueryData<Boleto[]>(BOLETOS_QUERY_KEY);
-            const previousBoleto = queryClient.getQueryData<Boleto>([BOLETOS_QUERY_KEY, variables]);
+            const detailKey = [...BOLETOS_QUERY_KEY, variables] as const
+            const previousBoleto = queryClient.getQueryData<Boleto>(detailKey)
 
-            // Optimistically update expenses list
-            if (previousBoletos) {
-                queryClient.setQueryData<Boleto[]>(BOLETOS_QUERY_KEY, (old) =>
-                    old?.map(boleto =>
-                        boleto.id === variables
-                            ? { ...boleto, paid: true, updatedAt: new Date() }
-                            : boleto
-                    ) ?? []
-                );
-            }
-
-            // Optimistically update single expense if it exists in cache
             if (previousBoleto) {
-                queryClient.setQueryData<Boleto>([BOLETOS_QUERY_KEY, variables], {
+                queryClient.setQueryData<Boleto>(detailKey, {
                     ...previousBoleto,
                     paid: true,
                     updatedAt: new Date()
-                });
+                })
             }
 
-            return { previousBoletos, previousBoleto };
+            return { previousBoleto, detailKey }
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: BOLETOS_QUERY_KEY })
             toast.success('Boleto pago com sucesso')
         },
         onError: (_error, _variables, context) => {
-            // Rollback to the previous state
-            queryClient.setQueryData(BOLETOS_QUERY_KEY, context?.previousBoletos)
-            queryClient.setQueryData([BOLETOS_QUERY_KEY, _variables], context?.previousBoleto)
+            if (context?.detailKey) {
+                queryClient.setQueryData(context.detailKey, context.previousBoleto)
+            }
             toast.error('Erro ao pagar boleto')
         },
     })

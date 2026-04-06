@@ -39,7 +39,7 @@ export function BoletosTable({ boletos, isLoading }: BoletosTableProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div>
       <Table>
         <TableHeader>
           <TableRow>

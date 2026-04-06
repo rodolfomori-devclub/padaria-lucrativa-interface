@@ -1,4 +1,5 @@
 import type { BaseDateFilters } from './filters'
+import type { PaginationMeta } from './pagination'
 import type { Supplier } from './supplier'
 
 export type RecurrencePattern = 'MONTHLY' | 'QUARTERLY' | 'SEMIANNUAL' | 'ANNUAL'
@@ -41,4 +42,9 @@ export interface UpdateBoletoData {
 export interface BoletoFilters extends BaseDateFilters {
     supplierId?: string
     paid?: boolean
-} 
+}
+
+export interface PaginatedBoletoResponse {
+    data: Boleto[]
+    meta: PaginationMeta
+}

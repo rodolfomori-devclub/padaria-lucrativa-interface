@@ -13,7 +13,11 @@ import { useSuppliers } from "~/hooks/suppliers/useSuppliers"
 export function Filters() {
     const { filters, updateFilters } = useBoletoFilters()
     const { allSuppliers } = useSuppliers()
-    const { total } = useBoletos(filters)
+    const { total } = useBoletos({
+        ...filters,
+        page: filters.page || 1,
+        limit: filters.limit || 15,
+    })
 
     return (
         <div className="mb-6 space-y-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
@@ -31,7 +35,12 @@ export function Filters() {
                     </Label>
                     <Select
                         value={filters.supplierId || 'all'}
-                        onValueChange={(value) => updateFilters({ supplierId: value === 'all' ? undefined : value })}
+                        onValueChange={(value) =>
+                            updateFilters({
+                                supplierId: value === 'all' ? undefined : value,
+                                page: 1,
+                            })
+                        }
                     >
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Todos os fornecedores" />
@@ -55,7 +64,8 @@ export function Filters() {
                         value={filters.paid === undefined ? 'all' : filters.paid.toString()}
                         onValueChange={(value) => {
                             updateFilters({
-                                paid: value === 'all' ? undefined : value === 'true'
+                                paid: value === 'all' ? undefined : value === 'true',
+                                page: 1,
                             })
                         }}
                     >
