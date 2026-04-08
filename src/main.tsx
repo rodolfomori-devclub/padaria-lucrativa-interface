@@ -11,18 +11,22 @@ import { queryClient } from "./lib/queryClient.ts";
 import { PostHogProvider } from "@posthog/react";
 import { POSTHOG_API_KEY, POSTHOG_OPTIONS } from "./lib/posthog.ts";
 
-createRoot(document.getElementById("root")!).render(
+const isDev = import.meta.env.DEV;
+
+const app = (
   <ErrorBoundary>
-    <StrictMode>
-      <PostHogProvider apiKey={POSTHOG_API_KEY} options={POSTHOG_OPTIONS}>
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <Toaster />
-            <App />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </AuthProvider>
-      </PostHogProvider>
-    </StrictMode>
-  </ErrorBoundary>,
+    <PostHogProvider apiKey={POSTHOG_API_KEY} options={POSTHOG_OPTIONS}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <Toaster />
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </AuthProvider>
+    </PostHogProvider>
+  </ErrorBoundary>
+);
+
+createRoot(document.getElementById("root")!).render(
+  isDev ? <StrictMode>{app}</StrictMode> : app,
 );

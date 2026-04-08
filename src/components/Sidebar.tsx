@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronRight, LogOut, User } from "lucide-react";
 import { useCallback, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "~/contexts/AuthContext";
 import { cn } from "~/lib/utils";
 import {
@@ -13,6 +13,7 @@ import {
 } from "~/routes/routes";
 import { UserRole } from "~/types/user";
 import { hasProAccess } from "~/utils/plans";
+import { SafeNavLink } from "./SafeNavLink";
 import {
   SidebarContent,
   SidebarFooter,
@@ -68,7 +69,7 @@ function NavItemComponent({ item, isActive }: NavItemComponentProps) {
 
   return (
     <SidebarMenuItem>
-      <Link
+      <SafeNavLink
         to={item.href!}
         className={cn(
           "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
@@ -79,7 +80,7 @@ function NavItemComponent({ item, isActive }: NavItemComponentProps) {
       >
         <item.icon className="mr-3 h-5 w-5" />
         {item.name}
-      </Link>
+      </SafeNavLink>
     </SidebarMenuItem>
   );
 }
@@ -109,14 +110,14 @@ function UserSection() {
 
       <div className="space-y-1">
         {USER_MENU_ITEMS.map((item) => (
-          <Link
+          <SafeNavLink
             key={item.name}
             to={item.href}
             className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-base transition-colors"
           >
             <item.icon className="mr-3 h-4 w-4" />
             {item.name}
-          </Link>
+          </SafeNavLink>
         ))}
 
         <button
