@@ -1,13 +1,33 @@
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 import * as React from "react"
+import { flushSync } from "react-dom"
 
 import { cn } from "~/lib/utils"
 
 function Select({
+  onValueChange,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+  const handleValueChange = React.useCallback(
+    (value: string) => {
+      if (onValueChange) {
+        // flushSync ensures portal cleanup completes before state update
+        flushSync(() => {
+          onValueChange(value)
+        })
+      }
+    },
+    [onValueChange]
+  )
+
+  return (
+    <SelectPrimitive.Root
+      data-slot="select"
+      onValueChange={handleValueChange}
+      {...props}
+    />
+  )
 }
 
 function SelectGroup({
