@@ -8,7 +8,7 @@ export function CMVIndicatorCard({
   const indicators = [
     {
       label: "CMV Atual",
-      value: cmvData.realValue,
+      value: cmvData?.realValue || 0,
       color: "text-blue-600",
     },
     {
