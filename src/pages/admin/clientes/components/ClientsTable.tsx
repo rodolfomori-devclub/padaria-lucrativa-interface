@@ -17,7 +17,7 @@ import type { User } from '~/types/user'
 import { handleCopy } from '~/utils/copy'
 import { formatDateDDMMYYYY } from '~/utils/formaters'
 import { plansTypes } from '~/utils/plans'
-import { DeleteClientDialog, EditClientDialog } from '.'
+import { DeleteClientDialog, EditClientDialog, ResendAccessDialog } from '.'
 
 interface ClientsTableProps {
     clients: User[]
@@ -84,6 +84,7 @@ export function ClientsTable({ clients, isLoading }: ClientsTableProps) {
                             </TableCell>
                             <TableCell className="text-right">
                                 <div className="flex justify-end gap-2">
+                                    <ResendAccessDialog client={client} />
                                     <EditClientDialog client={client} />
                                     <DeleteClientDialog client={client} />
                                 </div>
