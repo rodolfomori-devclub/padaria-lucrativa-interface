@@ -1,5 +1,6 @@
 export * from './useClients'
 export * from './useCreateClientMutation'
 export * from './useDeleteClientMutation'
+export * from './useResendClientAccessMutation'
 export * from './useUpdateClientMutation'
 export * from './useGetClient'
