@@ -28,6 +28,14 @@ export const formatDateDDMMYYYY = (date?: string) => {
   return date.split("T")[0].split("-").reverse().join("/");
 };
 
+export const formatDateTimeBR = (date?: string | null) => {
+  if (!date) return "-";
+  return new Date(date).toLocaleString("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+};
+
 export const formatDateForInput = (date?: string) => {
   if (!date) return "";
   // Get local date parts

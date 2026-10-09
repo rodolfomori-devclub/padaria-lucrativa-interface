@@ -1,0 +1,1 @@
+export { RastreamentoPage } from './RastreamentoPage';
