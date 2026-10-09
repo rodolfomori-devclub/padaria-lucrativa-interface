@@ -15,16 +15,20 @@ import { useResendClientAccessMutation } from '~/hooks/admin/clientes'
 import type { User } from '~/types/user'
 
 interface ResendAccessDialogProps {
-    client: User
+    client: Pick<User, 'id' | 'email'>
+    onResent?: () => void
+    /** Mostra o texto ao lado do ícone (a tabela de clientes usa só o ícone). */
+    showLabel?: boolean
 }
 
-export function ResendAccessDialog({ client }: ResendAccessDialogProps) {
+export function ResendAccessDialog({ client, onResent, showLabel }: ResendAccessDialogProps) {
     const [isOpen, setIsOpen] = useState(false)
     const { resendAccess, isPending } = useResendClientAccessMutation()
 
     const handleResend = async () => {
         await resendAccess(client.id)
         setIsOpen(false)
+        onResent?.()
     }
 
     return (
@@ -36,6 +40,7 @@ export function ResendAccessDialog({ client }: ResendAccessDialogProps) {
                     title="Reenviar link de acesso"
                 >
                     <MailPlus className="size-4" />
+                    {showLabel && 'Reenviar link de acesso'}
                 </Button>
             </DialogTrigger>
             <DialogContent>

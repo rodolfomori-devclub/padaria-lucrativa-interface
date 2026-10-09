@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import { ClientsPage } from "./pages/admin/clientes";
 import { EmployeesPage } from "./pages/admin/funcionarios";
+import { RastreamentoPage } from "./pages/admin/rastreamento";
 import {
   ForgotPasswordPage,
   LoginPage,
@@ -136,6 +137,10 @@ function App() {
           >
             {/* <Route path={ROUTES.ADMIN_PLANOS} element={<PlansPage />} /> */}
             <Route path={ROUTES.ADMIN_CLIENTES} element={<ClientsPage />} />
+            <Route
+              path={ROUTES.ADMIN_RASTREAMENTO}
+              element={<RastreamentoPage />}
+            />
             <Route
               path={ROUTES.ADMIN_FUNCIONARIOS}
               element={<EmployeesPage />}

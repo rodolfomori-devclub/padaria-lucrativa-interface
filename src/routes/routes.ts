@@ -8,6 +8,7 @@ import {
   GraduationCap,
   Home,
   Package,
+  SearchCheck,
   Settings,
   TableProperties,
   TrendingUp,
@@ -66,6 +67,7 @@ export const ROUTES = {
   ADMIN_PLANOS: "/admin/planos",
   ADMIN_FUNCIONARIOS: "/admin/funcionarios",
   ADMIN_CADASTROS_GERAIS: "/admin/cadastros-gerais",
+  ADMIN_RASTREAMENTO: "/admin/rastreamento",
 } as const;
 
 // Navigation item type
@@ -193,6 +195,11 @@ export const ADMIN_SIDEBAR_NAVIGATION: NavItem[] = [
     name: "Clientes",
     href: ROUTES.ADMIN_CLIENTES,
     icon: Users,
+  },
+  {
+    name: "Rastreamento",
+    href: ROUTES.ADMIN_RASTREAMENTO,
+    icon: SearchCheck,
   },
   // {
   //   name: "Planos",
